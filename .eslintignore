@@ -1,0 +1,27 @@
+# 依赖目录
+node_modules
+
+# 打包输出目录
+dist
+build
+
+# 公共静态资源
+public
+
+# 配置文件
+*.config.js
+vite.config.js
+vue.config.js
+
+# 测试覆盖报告
+coverage
+
+# 类型声明文件
+*.d.ts
+
+# 第三方库
+src/lib
+src/vendor
+
+# 如果有旧代码暂时不想改
+src/legacy

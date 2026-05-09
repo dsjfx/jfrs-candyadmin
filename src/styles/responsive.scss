@@ -1,0 +1,144 @@
+// 响应式断点
+$breakpoints: (
+  'xs': 576px,
+  'sm': 768px,
+  'md': 992px,
+  'lg': 1200px,
+  'xl': 1400px
+);
+
+// 响应式混入
+@mixin respond-to($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media (max-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  }
+}
+
+// 隐藏(显示)类
+.hide-on-mobile {
+  @include respond-to('sm') {
+    display: none !important;
+  }
+}
+
+.hide-on-tablet {
+  @include respond-to('md') {
+    display: none !important;
+  }
+}
+
+.show-on-mobile {
+  display: none !important;
+
+  @include respond-to('sm') {
+    display: block !important;
+  }
+}
+
+// 响应式表格
+.responsive-table {
+  @include respond-to('sm') {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+
+    table {
+      min-width: 600px;
+    }
+  }
+}
+
+// 响应式卡片
+.responsive-card {
+  @include respond-to('sm') {
+    .el-card__body {
+      padding: 12px !important;
+    }
+  }
+}
+
+// 响应式表单
+.responsive-form {
+  @include respond-to('sm') {
+    .el-form-item {
+      margin-bottom: 16px;
+
+      .el-form-item__label {
+        width: 100% !important;
+        text-align: left !important;
+        margin-bottom: 8px;
+      }
+
+      .el-form-item__content {
+        margin-left: 0 !important;
+      }
+    }
+  }
+}
+
+// 响应式按钮组
+.responsive-button-group {
+  @include respond-to('sm') {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .el-button {
+      width: 100%;
+    }
+  }
+}
+
+// 响应式网格
+.responsive-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+
+  @include respond-to('sm') {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+// 响应式间距
+.responsive-padding {
+  padding: 20px;
+
+  @include respond-to('sm') {
+    padding: 12px;
+  }
+}
+
+.responsive-margin {
+  margin: 20px;
+
+  @include respond-to('sm') {
+    margin: 12px;
+  }
+}
+
+// 全局移动端分页样式
+@include respond-to('sm') {
+  .el-pagination {
+
+    .el-pagination__total,
+    .el-pagination__sizes,
+    .el-pagination__jump {
+      display: none !important;
+    }
+
+    .btn-prev,
+    .btn-next,
+    .el-pager li {
+      min-width: 32px !important;
+      height: 32px !important;
+      margin: 0 2px !important;
+    }
+
+    .el-pager li {
+      line-height: 32px !important;
+    }
+  }
+}

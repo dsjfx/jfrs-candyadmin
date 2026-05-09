@@ -1,0 +1,32 @@
+import request from './index';
+import { CaptchaParam, LoginParams, RegisterParams, UserInfo } from "@/types/user";
+
+export const authApi = {
+  // 注册
+  register(params: RegisterParams) {
+    return request.post('/auth/register', params)
+  },
+
+  // 登陆
+  login(params: LoginParams) {
+    return request.post('/auth/login', params)
+  },
+
+  // 注销
+  logout() {
+    return request.post('/auth/logout')
+  },
+
+  // 获取用户信息
+  getProfile(info: Partial<UserInfo>) {
+    return request.post('/auth/profile', info)
+  },
+
+  validateCaptcha(captchaParam: CaptchaParam) {
+    return request.post('/captcha/validate', captchaParam)
+  },
+
+  refreshCaptcha(param: CaptchaParam) {
+    return request.post('/captcha/refresh', param)
+  },
+}
