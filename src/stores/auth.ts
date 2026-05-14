@@ -164,6 +164,27 @@ export const useAuthStore = defineStore('auth', () => {
     return data;
   }
 
+  // 获取用户信息
+  const getUserInfo = async (): Promise<UserInfo> => {
+    if (!token.value) {
+      throw new BlogError("未登录")
+    }
+
+    if (userInfo.value) {
+      return userInfo.value
+    }
+
+    const data = await authApi.getProfile({})
+    if (!data || !data.nickname) {
+      throw new BlogError("获取用户信息失败，请重新登录")
+    }
+
+    userInfo.value = data as UserInfo
+    localStorage.setItem('user_info', JSON.stringify(userInfo.value))
+
+    return userInfo.value
+  }
+
   // 初始化
   initAuth()
 
@@ -177,6 +198,7 @@ export const useAuthStore = defineStore('auth', () => {
     hasRole,
     updateUserInfo,
     refreshCaptcha,
-    register
+    register,
+    getUserInfo
   }
 })

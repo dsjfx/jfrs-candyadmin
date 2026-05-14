@@ -72,6 +72,35 @@
         </el-form-item>
       </el-card>
 
+      <!-- 新增：附加信息 -->
+      <el-card class="profile-card" shadow="never">
+        <template #header>
+          <div class="card-header">
+            <span>附加信息</span>
+          </div>
+        </template>
+
+        <el-form-item label="居住地" prop="location">
+          <el-input v-model="formData.location" placeholder="例如：上海/北京市/纽约" />
+        </el-form-item>
+
+        <el-form-item label="爱好" prop="hobbiesList">
+          <el-checkbox-group v-model="formData.hobbiesList">
+            <el-checkbox v-for="hobby in likeHobbies" :key="hobby.id" :label="hobby.value">
+              {{ hobby.label }}
+            </el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+
+        <el-form-item label="座右铭" prop="motto">
+          <el-input v-model="formData.motto" placeholder="一句话表达你的座右铭" />
+        </el-form-item>
+
+        <el-form-item label="工作岗位" prop="position">
+          <el-input v-model="formData.position" placeholder="例如：前端工程师" />
+        </el-form-item>
+      </el-card>
+
       <!-- 社交账号 -->
       <el-card class="profile-card" shadow="never">
         <template #header>
@@ -132,7 +161,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import ImageUpload from '@/components/ui/ImageUpload.vue'
@@ -155,14 +184,19 @@ const formData = reactive({
   username: authStore.userInfo?.username || '',
   nickname: authStore.userInfo?.nickname || '',
   email: authStore.userInfo?.email || '',
-  phone: '',
-  gender: 'other',
-  birthday: '',
-  bio: '',
-  github: '',
-  weibo: '',
-  zhihu: '',
-  website: ''
+  phone: authStore.userInfo?.phone || '',
+  gender: authStore.userInfo?.gender || 'other',
+  birthday: authStore.userInfo?.birthday || '',
+  bio: authStore.userInfo?.bio || '',
+  github: authStore.userInfo?.github || '',
+  weibo: authStore.userInfo?.weibo || '',
+  zhihu: authStore.userInfo?.zhihu || '',
+  website: authStore.userInfo?.website || '',
+  // 新增字段：附加信息
+  location: authStore.userInfo?.location || '',
+  hobbiesList: authStore.userInfo?.hobbies?.split(',') || [],
+  motto: authStore.userInfo?.motto || '',
+  position: authStore.userInfo?.position || ''
 })
 
 const rules: FormRules = {
@@ -180,6 +214,16 @@ const rules: FormRules = {
   ]
 }
 
+const likeHobbies = [
+  { id: 1, label: '阅读', value: '阅读' },
+  { id: 2, label: '运动', value: '运动' },
+  { id: 3, label: '音乐', value: '音乐' },
+  { id: 4, label: '旅行', value: '旅行' },
+  { id: 5, label: '编程', value: '编程' },
+  { id: 6, label: '解放鞋', value: '解放鞋' },
+  { id: 7, label: '手冲咖啡', value: 'coffee' },
+]
+
 const handleSubmit = async () => {
   if (!formRef.value) return
 
@@ -195,6 +239,19 @@ const handleSubmit = async () => {
       nickname: formData.nickname,
       avatar: formData.avatar,
       email: formData.email,
+      phone: formData.phone,
+      bio: formData.bio,
+      birthday: formData.birthday,
+      gender: formData.gender,
+      // 附加信息
+      location: formData.location,
+      hobbies: formData.hobbiesList.join(','),
+      motto: formData.motto,
+      position: formData.position,
+      github: formData.github,
+      weibo: formData.weibo,
+      zhihu: formData.zhihu,
+      website: formData.website
     })
 
     // 更新用户额外信息
@@ -202,7 +259,9 @@ const handleSubmit = async () => {
 
     ElMessage.success('资料更新成功')
   } catch (error) {
-    printMsg('保存失败:', error)
+    if (error instanceof Error) {
+      printMsg('表单验证失败', error)
+    }
   } finally {
     submitting.value = false
   }
@@ -244,6 +303,10 @@ const confirmEmail = () => {
     ElMessage.error('验证码错误')
   }
 }
+
+onMounted(async () => {
+  await authStore.getUserInfo()
+})
 </script>
 
 <style lang="scss" scoped>

@@ -8,6 +8,19 @@ export interface UserInfo {
   avatar?: string
   email?: string
   role: string
+  phone?: string
+  gender?: string
+  birthday?: string
+  bio?: string
+  location?: string
+  hobbies?: string
+  hobbiesList?: string[]
+  motto?: string
+  position?: string
+  github?: string
+  weibo?: string
+  zhihu?: string
+  website?: string
   permissions?: string[]
 }
 
