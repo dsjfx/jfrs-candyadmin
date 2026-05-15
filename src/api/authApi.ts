@@ -19,6 +19,11 @@ export const authApi = {
 
   // 获取用户信息
   getProfile(info: Partial<UserInfo>) {
+    return request.get('/auth/profile', info)
+  },
+
+  // 更新用户信息
+  updateProfile(info: Partial<UserInfo>) {
     return request.post('/auth/profile', info)
   },
 

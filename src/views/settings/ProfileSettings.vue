@@ -84,9 +84,9 @@
           <el-input v-model="formData.location" placeholder="例如：上海/北京市/纽约" />
         </el-form-item>
 
-        <el-form-item label="爱好" prop="hobbiesList">
-          <el-checkbox-group v-model="formData.hobbiesList">
-            <el-checkbox v-for="hobby in likeHobbies" :key="hobby.id" :label="hobby.value">
+        <el-form-item label="爱好" prop="hobbies">
+          <el-checkbox-group v-model="formData.hobbies">
+            <el-checkbox v-for="hobby in likeHobbies" :key="hobby.id" :value="hobby.value">
               {{ hobby.label }}
             </el-checkbox>
           </el-checkbox-group>
@@ -96,8 +96,8 @@
           <el-input v-model="formData.motto" placeholder="一句话表达你的座右铭" />
         </el-form-item>
 
-        <el-form-item label="工作岗位" prop="position">
-          <el-input v-model="formData.position" placeholder="例如：前端工程师" />
+        <el-form-item label="工作岗位" prop="job">
+          <el-input v-model="formData.job" placeholder="例如：前端工程师" />
         </el-form-item>
       </el-card>
 
@@ -112,6 +112,12 @@
         <el-form-item label="GitHub" prop="github">
           <el-input v-model="formData.github" placeholder="GitHub 用户名">
             <template #prepend>https://github.com/</template>
+          </el-input>
+        </el-form-item>
+
+        <el-form-item label="Twitter" prop="twitter">
+          <el-input v-model="formData.twitter" placeholder="Twitter 账号或 @用户名">
+            <template #prepend>https://twitter.com/</template>
           </el-input>
         </el-form-item>
 
@@ -130,6 +136,7 @@
         <el-form-item label="个人网站" prop="website">
           <el-input v-model="formData.website" placeholder="https://" />
         </el-form-item>
+
       </el-card>
 
       <!-- 提交按钮 -->
@@ -178,7 +185,7 @@ const emailCode = ref('')
 const countdown = ref(0)
 const emailVerified = ref(false)
 const phoneVerified = ref(false)
-
+console.log(authStore.userInfo)
 const formData = reactive({
   avatar: authStore.userInfo?.avatar || '',
   username: authStore.userInfo?.username || '',
@@ -192,11 +199,12 @@ const formData = reactive({
   weibo: authStore.userInfo?.weibo || '',
   zhihu: authStore.userInfo?.zhihu || '',
   website: authStore.userInfo?.website || '',
+  twitter: authStore.userInfo?.twitter || '',
   // 新增字段：附加信息
   location: authStore.userInfo?.location || '',
-  hobbiesList: authStore.userInfo?.hobbies?.split(',') || [],
+  hobbies: authStore.userInfo?.hobbies || [],
   motto: authStore.userInfo?.motto || '',
-  position: authStore.userInfo?.position || ''
+  job: authStore.userInfo?.position || '',
 })
 
 const rules: FormRules = {
@@ -221,7 +229,7 @@ const likeHobbies = [
   { id: 4, label: '旅行', value: '旅行' },
   { id: 5, label: '编程', value: '编程' },
   { id: 6, label: '解放鞋', value: '解放鞋' },
-  { id: 7, label: '手冲咖啡', value: 'coffee' },
+  { id: 7, label: '手冲咖啡', value: '手冲咖啡' },
 ]
 
 const handleSubmit = async () => {
@@ -230,9 +238,6 @@ const handleSubmit = async () => {
   try {
     await formRef.value.validate()
     submitting.value = true
-
-    // 模拟保存
-    // await new Promise(resolve => setTimeout(resolve, 1000))
 
     // 更新用户信息
     authStore.updateUserInfo({
@@ -245,9 +250,10 @@ const handleSubmit = async () => {
       gender: formData.gender,
       // 附加信息
       location: formData.location,
-      hobbies: formData.hobbiesList.join(','),
+      hobbies: formData.hobbies,
       motto: formData.motto,
-      position: formData.position,
+      position: formData.job,
+      twitter: formData.twitter,
       github: formData.github,
       weibo: formData.weibo,
       zhihu: formData.zhihu,

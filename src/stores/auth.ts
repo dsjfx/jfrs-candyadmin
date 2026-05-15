@@ -153,7 +153,7 @@ export const useAuthStore = defineStore('auth', () => {
   // 更新用户信息
   const updateUserInfo = async (info: Partial<UserInfo>) => {
     // 调用更新用户信息接口
-    const data = await authApi.getProfile(info)
+    const data = await authApi.updateProfile(info)
     printMsg(JSON.stringify(info))
 
     if (userInfo.value) {
@@ -170,7 +170,7 @@ export const useAuthStore = defineStore('auth', () => {
       throw new BlogError("未登录")
     }
 
-    if (userInfo.value) {
+    if (userInfo.value && userInfo.value.bio) {
       return userInfo.value
     }
 

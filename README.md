@@ -1,37 +1,81 @@
-# jCandyAdmin
+## jfrs Candy Admin
 
-#### 介绍
-一个用于博客内容的维护后台管理系统。
+Lightweight admin dashboard for blog management built with Vue 3, Vite and Element Plus.
 
-#### 软件架构
-软件架构说明
+This repository contains the frontend admin panel used to manage posts, categories, tags and site settings.
 
+### Features
 
-#### 安装教程
+- Vue 3 + Vite
+- Pinia store
+- Element Plus UI components
+- Profile & settings pages, blog editor, dashboard and basic auth flow
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+---
 
-#### 使用说明
+### Quick start
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1. Copy environment template and edit values as needed:
 
-#### 参与贡献
+```bash
+cp .env.example .env.local
+# then edit .env.local
+```
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+2. Install dependencies:
 
+```bash
+pnpm install
+```
 
-#### 特技
+3. Start dev server:
 
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+```bash
+pnpm dev
+```
+
+4. Build for production:
+
+```bash
+pnpm build
+```
+
+5. Preview production build locally:
+
+```bash
+pnpm preview
+```
+
+Notes: if you prefer npm or yarn use the equivalent commands (npm install / npm run dev / etc.).
+
+### Environment variables
+
+The project uses Vite and environment variables prefixed with `VITE_`. See `.env.example` for the full list. Important ones:
+
+- `VITE_API_BASE_URL` — backend API base URL (e.g. http://localhost:3000)
+- `VITE_API_TIMEOUT` — request timeout in ms
+- `VITE_UPLOAD_URL` — upload endpoint base path or URL
+- `VITE_APP_TITLE`, `VITE_APP_VERSION`, `VITE_APP_TECH_SUPPORT` — shown in UI
+
+### Project structure (important folders)
+
+- `src/api` — API wrappers
+- `src/views` — page views
+- `src/components` — reusable components
+- `src/stores` — Pinia stores
+- `src/utils` — helper utilities
+
+### Contributing
+
+1. Fork the repository
+2. Create a feature branch: `feat/your-feature`
+3. Commit and push your changes
+4. Open a pull request and describe your changes
+
+Please follow existing code styles, and add tests when appropriate.
+
+---
+
+### License
+
+MIT
