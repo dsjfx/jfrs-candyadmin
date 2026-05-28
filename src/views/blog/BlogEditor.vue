@@ -28,12 +28,12 @@
             </el-select> -->
             <el-tree-select v-model="formData.categoryId" placeholder="请选择分类" :data="categoryTree" check-strictly
               :render-after-expand="false" show-checkbox check-on-click-node class="editor-form-category" clearable
-              :default-expanded-keys="ckeys" node-key="id" />
+              :default-expanded-keys="ckeys" node-key="id" filterable :filter-node-method="filterNodeMethod" />
           </el-form-item>
 
           <!-- 标签 -->
           <el-form-item label="标签">
-            <el-select v-model="formData.tagIds" multiple placeholder="请选择标签" class="editor-form-tag">
+            <el-select v-model="formData.tagIds" multiple placeholder="请选择标签" class="editor-form-tag" filterable>
               <el-option v-for="tag in tags" :key="tag.id" :label="tag.name" :value="tag.id">
                 <div class="tag-option">
                   <span class="tag-color" :style="{ backgroundColor: tag.color || '#409eff' }" />
@@ -249,6 +249,15 @@ const loadCommentPermissions = async () => {
 const categoryTree = computed(() => categoryStore.categoryTree);
 const tags = computed(() => tagStore.tags);
 const ckeys = computed(() => categoryStore.getCategoryKeys);
+
+// 树节点过滤方法（用于 category tree select 的搜索）
+const filterNodeMethod = (value: string, data: { label?: string; name?: string }) => {
+  if (!value) return true;
+  const label = data.label || data.name || '';
+  return label.toString().toLowerCase().includes(value.toLowerCase());
+}
+
+// （标签使用 el-select 自带的 filterable 行为，所以无需自定义过滤函数）
 
 // 初始化数据
 onMounted(async () => {
