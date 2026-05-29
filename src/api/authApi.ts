@@ -1,4 +1,4 @@
-import request, { ResponseData } from './index';
+import request from './index';
 import { CaptchaParam, LoginParams, RegisterParams, UserInfo } from "@/types/user";
 
 export const authApi = {

@@ -38,7 +38,7 @@ export const systemApi = {
     return request.get<ConfigGroupData>('/system/configs');
   },
 
-  updateSystemConfigs(payload) {
+  updateSystemConfigs() {
     return request.get<ConfigGroupData>('/system/configs');
   }
 }

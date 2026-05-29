@@ -220,7 +220,7 @@ const handleRestore = (backup: any) => {
   showRestoreDialog.value = true
 }
 
-const handleDownload = (backup: any) => {
+const handleDownload = () => {
   ElMessage.info('下载功能开发中')
 }
 

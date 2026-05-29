@@ -266,7 +266,7 @@
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { ElMessage, ElMessageBox } from 'element-plus';
+import { ElMessage } from 'element-plus';
 import type { FormInstance, FormRules } from 'element-plus';
 import { ArrowLeft, View, Check, Plus } from '@element-plus/icons-vue'
 import RichEditor from '@/components/ui/RichEditor.vue';
@@ -494,7 +494,7 @@ const handleCreateCategory = async () => {
     await categoryStore.createCategory({
       name: categoryForm.name,
       slug: categoryForm.slug,
-      order: categoryStore.categories.length
+      sort: categoryStore.categories.length
     })
     ElMessage.success('分类创建成功')
     categoryDialog.visible = false

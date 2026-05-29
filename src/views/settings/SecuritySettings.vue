@@ -147,6 +147,11 @@ const passwordForm = reactive({
   confirmPassword: ''
 })
 
+const formData = reactive({
+  email: '',
+  phone: ''
+})
+
 // 密码强度计算
 const passwordStrength = computed(() => {
   const pwd = passwordForm.newPassword
@@ -177,7 +182,7 @@ const passwordRules: FormRules = {
     { required: true, message: '请输入新密码', trigger: 'blur' },
     { min: 8, message: '密码长度不能小于8位', trigger: 'blur' },
     {
-      validator: (rule, value, callback) => {
+      validator: (_rule, value, callback) => {
         if (value && passwordStrength.value < 40) {
           callback(new Error('密码强度太低'))
         } else {
@@ -190,7 +195,7 @@ const passwordRules: FormRules = {
   confirmPassword: [
     { required: true, message: '请再次输入密码', trigger: 'blur' },
     {
-      validator: (rule, value, callback) => {
+      validator: (_rule, value, callback) => {
         if (value !== passwordForm.newPassword) {
           callback(new Error('两次输入的密码不一致'))
         } else {

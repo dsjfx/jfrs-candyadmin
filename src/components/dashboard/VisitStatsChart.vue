@@ -5,26 +5,25 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, onUnmounted } from 'vue'
 import * as echarts from 'echarts'
-import { EChartsType } from 'echarts/core'
 
 interface Props {
   data: {
-    labels: string[]
-    visits: number[]
-    pageviews: number[]
+    labels?: string[]
+    visits?: number[]
+    pageviews?: number[]
   } | null
   loading: boolean
 }
 
 const props = defineProps<Props>()
 const chartRef = ref<HTMLDivElement>()
-let chart: EChartsType | null = null
+let chart: echarts.ECharts | null = null
 
 const initChart = () => {
   if (!chartRef.value) return
-  
+
   chart = echarts.init(chartRef.value)
-  
+
   const option = {
     tooltip: {
       trigger: 'axis',
@@ -96,8 +95,8 @@ const initChart = () => {
       }
     ]
   }
-  
-  chart.setOption(option)
+
+  chart?.setOption(option)
 }
 
 const resizeChart = () => {

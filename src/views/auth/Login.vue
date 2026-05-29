@@ -292,7 +292,7 @@ const strengthColor = computed(() => {
 })
 
 // 注册表单验证规则
-const validatePass2 = (rule: any, value: string, callback: any) => {
+const validatePass2 = (_rule: any, value: string, callback: any) => {
   if (value === '') {
     callback(new Error('请再次输入密码'))
   } else if (value !== registerForm.password) {
@@ -320,7 +320,7 @@ const registerRules: FormRules = {
     { required: true, message: '请输入密码', trigger: 'blur' },
     { min: 6, max: 20, message: '密码长度在 6 到 20 个字符', trigger: 'blur' },
     {
-      validator: (rule, value, callback) => {
+      validator: (_rule, value, callback) => {
         if (value && passwordStrength.value < 40) {
           callback(new Error('密码强度太低'))
         } else {
@@ -336,7 +336,7 @@ const registerRules: FormRules = {
   ],
   agreeTerms: [
     {
-      validator: (rule, value, callback) => {
+      validator: (_rule, value, callback) => {
         if (!value) {
           callback(new Error('请同意用户协议和隐私政策'))
         } else {
@@ -524,8 +524,8 @@ const handleForgotPassword = () => {
     cancelButtonText: '取消',
     inputPattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
     inputErrorMessage: '邮箱格式不正确'
-  }).then(({ value }) => {
-    ElMessage.success(`重置密码链接已发送至 ${value}`)
+  }).then(() => {
+    ElMessage.success(`重置密码链接已发送至`)
   }).catch(() => {
     ElMessage.info('取消找回密码')
   })

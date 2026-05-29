@@ -18,7 +18,7 @@ export interface CategoryTree extends Category {
 }
 
 export interface CategoryForm {
-  id: number | string
+  id?: number | string
   name: string
   slug: string
   description?: string

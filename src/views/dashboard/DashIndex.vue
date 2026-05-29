@@ -720,7 +720,7 @@ const handleAddTodo = () => {
   showTodoInput.value = true
 }
 
-const handleTodoToggle = async (todo: any) => {
+const handleTodoToggle = async () => {
   // 这里应该调用API更新待办事项状态
   await new Promise(resolve => setTimeout(resolve, 300))
   ElMessage.success('待办事项已更新')

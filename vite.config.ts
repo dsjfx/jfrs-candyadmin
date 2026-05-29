@@ -47,6 +47,7 @@ export default defineConfig({
     target: 'es2015',
     outDir: 'dist',
     assetsDir: 'assets',
+    minify: 'esbuild', // 压缩时进一步移除死代码
     assetsInlineLimit: 4096,
     cssCodeSplit: true,
     sourcemap: false,
