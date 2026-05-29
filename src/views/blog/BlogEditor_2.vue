@@ -467,14 +467,14 @@ const commPermissionChange = (value: string) => {
 }
 
 // 标签变化
-const handleTagChange = (value: any) => {
-  // 处理新创建的标签
-  const newTags = value.filter((id: any) => typeof id === 'string')
-  if (newTags.length > 0) {
-    // TODO: 调用创建标签API
-    ElMessage.info('新标签将自动创建')
-  }
-}
+// const handleTagChange = (value: any) => {
+//   // 处理新创建的标签
+//   const newTags = value.filter((id: any) => typeof id === 'string')
+//   if (newTags.length > 0) {
+//     // TODO: 调用创建标签API
+//     ElMessage.info('新标签将自动创建')
+//   }
+// }
 
 // 移除标签
 const handleRemoveTag = (tagId: string | number) => {

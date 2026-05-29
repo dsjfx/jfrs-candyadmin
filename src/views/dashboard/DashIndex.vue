@@ -308,8 +308,8 @@
 
               <div v-else>
                 <div v-for="todo in todos" :key="todo.id" class="todo-item" :class="{ completed: todo.completed }">
-                  <el-checkbox v-model="todo.completed" @change="handleTodoToggle(todo)" />
-                  <span class="todo-text" @click="handleTodoToggle(todo)">
+                  <el-checkbox v-model="todo.completed" @change="handleTodoToggle()" />
+                  <span class="todo-text" @click="handleTodoToggle()">
                     {{ todo.text }}
                   </span>
                   <el-button size="small" text circle @click="handleDeleteTodo(todo)">
@@ -748,6 +748,7 @@ const handleDeleteTodo = async (todo: any) => {
 
     todos.value = todos.value.filter(t => t.id !== todo.id)
     ElMessage.success('已删除待办事项')
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     // 用户取消删除
   }

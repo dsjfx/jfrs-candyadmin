@@ -309,7 +309,7 @@ const handleCreate = () => {
 const handleCreateChild = (row: CategoryForm) => {
   dialog.mode = 'create'
   dialog.title = `添加子分类 - ${row.name}`
-  dialog.parentId = row.id
+  dialog.parentId = row.id || null
   resetForm()
   formData.parentId = row.id
   dialog.visible = true
@@ -355,7 +355,7 @@ const handleDelete = async (row: CategoryTree) => {
 
 const handleOrderChange = async (row: CategoryForm) => {
   try {
-    await categoryStore.updateCategory(row.id, { sort: row.sort })
+    await categoryStore.updateCategory(row.id ?? 0, { sort: row.sort })
     ElMessage.success('排序更新成功')
   } catch (error) {
     console.error('更新排序失败:', error)
@@ -395,7 +395,9 @@ const handleCollapseAll = () => {
 }
 
 const handleSelectionChange = (selection: CategoryForm[]) => {
-  selectedIds.value = selection.map(item => item.id)
+  selectedIds.value = selection
+    .map(item => item.id)
+    .filter((id): id is string | number => id !== undefined && id !== null)
 }
 
 const handleSizeChange = (size: number) => {

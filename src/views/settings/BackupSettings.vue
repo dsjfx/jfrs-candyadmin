@@ -94,7 +94,7 @@
             <el-button size="small" type="primary" link @click="handleRestore(row)">
               恢复
             </el-button>
-            <el-button size="small" type="success" link @click="handleDownload(row)">
+            <el-button size="small" type="success" link @click="handleDownload()">
               下载
             </el-button>
             <el-button size="small" type="danger" link @click="handleDelete(row)">
