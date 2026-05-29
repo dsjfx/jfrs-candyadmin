@@ -92,7 +92,7 @@ const loadConfigs = async () => {
     // Object.assign(formData.theme, res.data.theme);
     // Object.assign(formData.backup, res.data.backup);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    // } catch (error) {
+  } catch (error) {
     // ElMessage.error('加载配置失败', error);
   }
 };
@@ -102,6 +102,7 @@ const handleSave = async () => {
   try {
     // await systemApi.updateSystemConfigs(formData);
     ElMessage.success('保存成功');
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     // ElMessage.error('保存失败', error);
   } finally {
