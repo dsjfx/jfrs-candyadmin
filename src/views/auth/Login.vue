@@ -175,11 +175,17 @@
       </div>
     </div>
 
-    <div class="auth-footer">
-      <p class="footer-text">
-        © {{ currentYear }} {{ appName }}
-      </p>
-      <p class="version">版本: {{ appVersion }}. 技术支持: {{ appSupport }}</p>
+    <div class="footer">
+      <div class="footer-info">
+        <span class="footer-copyright">© {{ currentYear }} {{ appName }}</span>
+        <span class="footer-version">版本: {{ appVersion }}. </span>
+        <!-- <span class="support">技术支持: {{ appSupport }}</span> -->
+      </div>
+      <div class="footer-beian">
+        <a v-if="icpLicense" href="https://beian.miit.gov.cn/" target="_blank">{{ icpLicense }}</a>
+        <a v-if="publicSecurityLicense" href="http://www.beian.gov.cn/" target="_blank">{{ publicSecurityLicense
+        }}</a>
+      </div>
     </div>
   </div>
 </template>
@@ -225,10 +231,13 @@ const captchaImage = ref('')
 const enableRegister = ref(true)
 
 // 标题
-// const appName = import.meta.env.VITE_APP_TITLE || '博客管理系统'
 const appVersion = import.meta.env.VITE_APP_VERSION || '1.0.0'
-const appSupport = import.meta.env.VITE_APP_TECH_SUPPORT
+// const appSupport = import.meta.env.VITE_APP_TECH_SUPPORT
 const currentYear = new Date().getFullYear()
+
+// 备案信息（参考 AdminLayout.vue）
+const icpLicense = ref<string | null>(null)
+const publicSecurityLicense = ref<string | null>(null)
 
 const { appName } = useAppName('管理系统')
 
@@ -295,7 +304,7 @@ const strengthColor = computed(() => {
 })
 
 // 注册表单验证规则
-const validatePass2 = (_rule: any, value: string, callback: any) => {
+const validatePass2 = (_rule: unknown, value: string, callback: (err?: Error) => void) => {
   if (value === '') {
     callback(new Error('请再次输入密码'))
   } else if (value !== registerForm.password) {
@@ -560,6 +569,20 @@ onMounted(() => {
   if (showCaptcha.value) {
     refreshCaptcha()
   }
+
+  // 尝试加载简单用户信息以获取备案信息（icp / 公安备案）
+  ; (async () => {
+    try {
+      const simpleUser = await authStore.getUserAvatar(10)
+      if (simpleUser) {
+        icpLicense.value = simpleUser.icpLicense ?? null
+        publicSecurityLicense.value = simpleUser.publicSecurityLicense ?? null
+      }
+    } catch (err) {
+      // log and ignore
+      console.debug('load simple user failed', err)
+    }
+  })()
 })
 </script>
 
@@ -968,7 +991,10 @@ $breakpoint-tablet: 992px;
   }
 }
 
-.auth-footer {
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-top: 30px;
   margin-bottom: 10px;
   text-align: center;
@@ -980,13 +1006,30 @@ $breakpoint-tablet: 992px;
     font-size: 10px;
   }
 
-  .footer-text {
-    color: #BCD2EE;
-    margin-bottom: 8px;
+  .footer-info {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+
+    .footer-copyright {
+      color: #BCD2EE;
+      margin-bottom: 8px;
+    }
+
+    .footer-version {
+      color: #BCD2EE;
+    }
   }
 
-  .version {
-    color: #c0c4cc;
+  .footer-beian {
+    a {
+      color: #c0c4cc;
+      text-decoration: none;
+
+      &:hover {
+        color: variables.$color-primary;
+      }
+    }
   }
 }
 </style>

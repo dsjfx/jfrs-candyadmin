@@ -1,16 +1,26 @@
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
+
+const masterRef = ref<string>((import.meta.env.VITE_APP_TITLE_MASTER || '').toString().trim())
+const slaveRef = ref<string>((import.meta.env.VITE_APP_TITLE_SLAVE || '').toString().trim())
 
 export function useAppName(suffix: string = '') {
-    const master = (import.meta.env.VITE_APP_TITLE_MASTER || '').toString().trim()
-    const slave = (import.meta.env.VITE_APP_TITLE_SLAVE || '').toString().trim()
-    const defaultName = '糖果 · 管理平台'
-
     const appName = computed(() => {
-        if (master && slave) return `${master} · ${slave}${suffix}`
-        if (master) return master
-        if (slave) return slave
-        return defaultName
+        const m = masterRef.value
+        const s = slaveRef.value
+        if (m && s) return `${m} · ${s}${suffix}`
+        if (m) return m
+        if (s) return s
+        return '糖果管理平台'
     })
 
-    return { appName, master, slave }
+    const setMaster = (v: string) => { masterRef.value = v?.toString().trim() || '' }
+    const setSlave = (v: string) => { slaveRef.value = v?.toString().trim() || '' }
+
+    return {
+        master: masterRef,
+        slave: slaveRef,
+        appName,
+        setMaster,
+        setSlave,
+    }
 }
