@@ -434,9 +434,9 @@ const handlerClose = () => {
   }
 }
 
-const fetchSimpleUser = async (id: number) => {
+const fetchSimpleUser = async () => {
   try {
-    const simpleUser = await authStore.getUserAvatar(id)
+    const simpleUser = await authStore.getUserAvatar()
     if (simpleUser) {
       avatar.value = simpleUser.avatar || ''
       icpLicense.value = simpleUser.icpLicense
@@ -448,7 +448,7 @@ const fetchSimpleUser = async (id: number) => {
 }
 
 onMounted(async () => {
-  await fetchSimpleUser(10)
+  await fetchSimpleUser()
 
   checkScreenWidth()
   window.addEventListener('resize', checkScreenWidth)
