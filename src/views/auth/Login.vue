@@ -445,7 +445,6 @@ const handleRegister = async () => {
       email: registerForm.email,
       password: registerForm.password,
       confirmPassword: registerForm.confirmPassword,
-      role: 'admin',
     })
 
     if (data && data.userId) {
@@ -573,7 +572,7 @@ onMounted(() => {
   // 尝试加载简单用户信息以获取备案信息（icp / 公安备案）
   ; (async () => {
     try {
-      const simpleUser = await authStore.getUserAvatar(10)
+      const simpleUser = await authStore.getUserAvatar()
       if (simpleUser) {
         icpLicense.value = simpleUser.icpLicense ?? null
         publicSecurityLicense.value = simpleUser.publicSecurityLicense ?? null

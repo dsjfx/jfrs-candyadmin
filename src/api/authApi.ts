@@ -28,7 +28,7 @@ export const authApi = {
   },
 
   getUserAvatar(params: Partial<UserInfo>) {
-    return request.get('/auth/avatar', params);
+    return request.get('/auth/sys-avatar', params);
   },
 
   validateCaptcha(captchaParam: CaptchaParam) {

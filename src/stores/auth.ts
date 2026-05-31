@@ -186,10 +186,10 @@ export const useAuthStore = defineStore('auth', () => {
     return userInfo.value
   }
 
-  const getUserAvatar = async (id: number): Promise<SimpleUser> => {
+  const getUserAvatar = async (): Promise<SimpleUser> => {
     let data = {} as SimpleUser
 
-    const result = await authApi.getUserAvatar({ id })
+    const result = await authApi.getUserAvatar({})
     if (result) {
       data = result as SimpleUser
     }
