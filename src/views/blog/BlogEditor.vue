@@ -164,7 +164,7 @@ const isEditMode = computed(() => !!route.params.id);
 
 const formData = reactive<BlogForm>({
   title: '',
-  subject: 'article',
+  subject: null,
   content: '',
   summary: '',
   coverImage: '',
@@ -177,7 +177,7 @@ const formData = reactive<BlogForm>({
   allowedRoles: '',
   commentPermission: 'all',
   commentAllowedRoles: '',
-  publishedAt: ''
+  publishedAt: null,
 } as BlogForm);
 
 const rules: FormRules = {
@@ -214,12 +214,6 @@ const loadSubjects = async () => {
   }
 }
 
-// const visibilities = [
-//   { name: '所有人可见', value: 'public' },
-//   { name: '仅登陆用户可见', value: 'registered_only' },
-//   { name: '基于角色的访问控制', value: 'role_based' },
-//   { name: '仅作者和管理员可见', value: 'private' },
-// ]
 const loadVisibilities = async () => {
   try {
     const res = await assistApi.getSubjects({ type: 'visibility' });
@@ -230,12 +224,6 @@ const loadVisibilities = async () => {
   }
 }
 
-// const commentPermissions = [
-//   { name: '所有人', value: 'all' },
-//   { name: '注册用户', value: 'registed' },
-//   { name: '基于角色的评论控制', value: 'role_based' },
-//   { name: '仅作者', value: 'none' },
-// ]
 const loadCommentPermissions = async () => {
   try {
     const res = await assistApi.getSubjects({ type: 'comment_permission' });
@@ -279,14 +267,15 @@ const fetchBlogDetail = async () => {
     const blog = await blogStore.fetchBlog(route.params.id as string);
     Object.assign(formData, {
       title: blog.title,
+      subject: blog.subject,
       content: blog.content,
       summary: blog.summary,
       coverImage: blog.coverImage,
       categoryId: blog.categoryId,
       status: blog.status,
       isTop: blog.isTop,
-      isComment: blog.isComment
-      , publishedAt: blog.publishedAt || ''
+      isComment: blog.isComment,
+      publishedAt: blog.publishedAt || null
     });
 
     // 由于标签和博客是多对多关系，所以需要单独处理

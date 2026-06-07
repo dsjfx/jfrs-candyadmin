@@ -4,7 +4,7 @@ export interface Blog {
   // 主要属性
   id: number | string;
   title: string;
-  type: string;
+  subject: string;
   content: string;
   summary?: string;
   coverImage?: string;
@@ -19,7 +19,7 @@ export interface Blog {
   likes?: number;
   isTop?: boolean;
   isComment?: boolean;
-  publishedAt?: string;
+  publishedAt: string | null;
   author?: BlogAuthor;
   category?: BlogCategory;
   tags?: BlogTags[];
@@ -27,7 +27,7 @@ export interface Blog {
 
 export interface BlogForm {
   title: string;
-  subject: `${EBlogType}`;
+  subject: `${EBlogType}` | null;
   content: string;
   summary?: string;
   coverImage?: string;
@@ -42,7 +42,7 @@ export interface BlogForm {
   commentPermission: `${ECommentPermission}`;
   commentAllowedRoles?: string;
   photos?: PhotoData[];
-  publishedAt?: string;
+  publishedAt: string | null;
 }
 
 export interface BlogQueryParams {

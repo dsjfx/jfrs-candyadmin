@@ -91,12 +91,16 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="subject" label="类别" width="120" />
+      <el-table-column label="类别" width="120">
+        <template #default="{ row }">
+          {{ subjectMap[row.subject as string] ?? row.subject ?? '-' }}
+        </template>
+      </el-table-column>
       <el-table-column prop="category.name" label="分类" width="120" />
 
       <el-table-column label="标签" width="150">
         <template #default="{ row }">
-          <el-tag v-for="tag in row.tags" :key="tag.id" size="small" :color="tag.color" class="tag-item">
+          <el-tag v-for="tag in row.tags" :key="tag.id" size="small" class="tag-item">
             {{ tag.name }}
           </el-tag>
         </template>
@@ -218,6 +222,15 @@ const searchForm = reactive({
   publishedRange: [] as string[],
   appType: 'admin',
 });
+
+// map subject value -> name for quick lookup
+const subjectMap = computed(() => {
+  const map: Record<string, string> = {}
+  subjects.value.forEach(s => {
+    if (s && s.value) map[s.value] = s.name
+  })
+  return map
+})
 
 const pagination = reactive({
   page: 1,

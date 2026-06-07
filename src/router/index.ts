@@ -90,17 +90,16 @@ const router = createRouter({
 
 // 临时增加，备案后再删除
 const loginInfo = {
-  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNCIsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoidmlzaXRvciIsImp0aSI6Ijc1OTAwZmM1LWUzOWUtNGY4OS04ZjA4LWYyZjc2NzI4NWI4OSIsImlhdCI6MTc4MDU2MDIzOSwiZXhwIjoxNzgzMTUyMjM5LCJhdWQiOiJqY2FuZHktYWRtaW4iLCJpc3MiOiJqaW5nb3QifQ.asAQCdS8lpHXG4DFbaHWw0M5ClxnNn88zO0IGUEBZh4",
-  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNCIsInR5cGUiOiJyZWZyZXNoIiwianRpIjoiMjQzMjBkMDAtYzQzNy00ZjVlLWI4YjUtZWJlYWEwOWExMTgzIiwiaWF0IjoxNzgwNTYwMjM5LCJleHAiOjE3ODExNjUwMzksImlzcyI6ImppbmdvdCJ9.yJ_KcnLfEt1_b47MIUSBRGyCaLOdg0Ngx8dOkhibw9I",
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNCIsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiYWRtaW4iLCJqdGkiOiJhYjg5ZTU2My1jOGY0LTRlZDQtODRmOS1lOGI1ZjA4Y2MzZmUiLCJpYXQiOjE3ODA4MTkzMjQsImV4cCI6MTc4MzQxMTMyNCwiYXVkIjoiamNhbmR5LWFkbWluIiwiaXNzIjoiamluZ290In0.JSAR80U_VibHgnbWlbP8MtUz4wURIovL3vPwUXlMZc8",
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNCIsInR5cGUiOiJyZWZyZXNoIiwianRpIjoiZjc2NDQ1NDktZjBjZi00NWI0LTlmN2ItNDhjZTI0NzdmNTNiIiwiaWF0IjoxNzgwODE5MzI0LCJleHAiOjE3ODE0MjQxMjQsImlzcyI6ImppbmdvdCJ9.UU12K-Z7NZ_7d6yLQY_emdWGp8t_rsDx9Uc3kKMWJ94",
   "expiresIn": 2592000,
-  "tokenType":
-    "Bearer",
+  "tokenType": "Bearer",
   "userInfo": {
     "id": "14",
     "username": "admin",
     "nickname": "管理员",
     "email": "admin123@126.com",
-    "role": "visitor",
+    "role": "admin",
     "avatar": null,
     "permissions": ["*"]
   }
