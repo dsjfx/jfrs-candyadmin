@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue'
+import { ref, computed, ComputedRef } from 'vue'
 
 const masterRef = ref<string>((import.meta.env.VITE_APP_TITLE_MASTER || '').toString().trim())
 const slaveRef = ref<string>((import.meta.env.VITE_APP_TITLE_SLAVE || '').toString().trim())
@@ -23,4 +23,25 @@ export function useAppName(suffix: string = '') {
     setMaster,
     setSlave,
   }
+}
+
+type AppNameParts = {
+  master?: string
+  slave?: string
+  suffix?: string
+  hasMaster?: boolean
+  hasSlave?: boolean
+}
+
+export function useAppNameStruct(suffix: string = ''): { appNameParts: ComputedRef<AppNameParts> } {
+  const appNameParts = computed(() => {
+    const m = masterRef.value
+    const s = slaveRef.value
+    if (m && s) return { master: m, slave: s, suffix, hasMaster: true, hasSlave: true }
+    if (m) return { master: m, hasMaster: true }
+    if (s) return { slave: s, hasSlave: true }
+    return { master: '糖果生活', hasMaster: true }
+  })
+
+  return { appNameParts }
 }

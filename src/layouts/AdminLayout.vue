@@ -10,7 +10,17 @@
         <div class="logo-container">
           <div class="logo" @click="goHome">
             <!-- <img v-if="!isCollapse" src="avatar" alt="Logo" class="logo-img" /> -->
-            <h2 v-if="!isCollapse && !isMobile" class="logo-text"> {{ appName }}</h2>
+            <h2 v-if="!isCollapse && !isMobile" class="logo-text">
+              <span v-if="appNameParts.hasMaster" class="title-master">
+                {{ appNameParts.master }}
+              </span>
+              <span v-if="appNameParts.hasMaster && appNameParts.hasSlave" class="title-divider">
+                ·
+              </span>
+              <span v-if="appNameParts.hasSlave" class="title-slave">
+                {{ appNameParts.slave }}
+              </span>
+            </h2>
             <h2 v-else-if="!isCollapse && isMobile" class="logo-text">
               糖果
               <el-button text v-if="isMobile" :icon="Fold" @click="toggleCollapse" class="collapse-btn" />
@@ -213,7 +223,7 @@ import {
 } from '@element-plus/icons-vue'
 import Sidebar from '@/components/layout/Sidebar.vue';
 import { useAuthStore } from '@/stores/auth'
-import { useAppName } from '@/composables/useAppName'
+import { useAppName, useAppNameStruct } from '@/composables/useAppName'
 
 const route = useRoute();
 const router = useRouter();
@@ -243,7 +253,8 @@ const breadcrumbs = computed(() => {
   return route.matched.filter(item => item.meta?.title);
 });
 
-const { appName } = useAppName()
+const { appName } = useAppName('管理系统')
+const { appNameParts } = useAppNameStruct()
 
 // 用户信息
 const userInfoStr = localStorage.getItem('user_info');
@@ -531,7 +542,7 @@ $breakpoint-tablet: 992px;
 
       .logo-text {
         margin: 0;
-        color: #fff;
+        color: #f2f6fc;
         font-size: 1.8rem;
         font-weight: 600;
         white-space: nowrap;
