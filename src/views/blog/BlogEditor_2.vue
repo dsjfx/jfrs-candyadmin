@@ -306,6 +306,7 @@ const formData = reactive<BlogForm>({
   allowedRoles: '',
   commentPermission: 'all',
   commentAllowedRoles: '',
+  publishedAt: null,
 });
 
 // 发布时间

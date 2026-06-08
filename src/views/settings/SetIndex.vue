@@ -37,23 +37,23 @@
 <script setup lang="ts">
 import { ref, reactive, markRaw, onMounted } from 'vue'
 import {
-  // Setting,
+  Setting,
   User,
-  // Lock,
-  // Bell,
-  // Brush,
-  // Folder,
+  Lock,
+  Bell,
+  Brush,
+  Folder,
 } from '@element-plus/icons-vue'
 import type { TabsPaneContext } from 'element-plus'
 
 // 标签页配置
 const tabs = [
-  // { name: 'general', label: '通用设置', icon: Setting },
+  { name: 'general', label: '通用设置', icon: Setting },
   { name: 'profile', label: '个人资料', icon: User },
-  // { name: 'security', label: '安全设置', icon: Lock },
-  // { name: 'notification', label: '通知设置', icon: Bell },
-  // { name: 'theme', label: '主题设置', icon: Brush },
-  // { name: 'backup', label: '备份恢复', icon: Folder },
+  { name: 'security', label: '安全设置', icon: Lock },
+  { name: 'notification', label: '通知设置', icon: Bell },
+  { name: 'theme', label: '主题设置', icon: Brush },
+  { name: 'backup', label: '备份恢复', icon: Folder },
 ]
 
 const activeTab = ref('general')
