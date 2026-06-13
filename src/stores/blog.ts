@@ -19,8 +19,8 @@ export const useBlogStore = defineStore('blog', {
     total: 0,
     loading: false,
     queryParams: {
-      page: 1,
-      limit: 20,
+      current: 1,
+      size: 10,
       search: '',
       status: 'published',
       sortBy: 'createdAt',
@@ -131,4 +131,3 @@ export const useBlogStore = defineStore('blog', {
     }
   }
 });
- 

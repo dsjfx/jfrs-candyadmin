@@ -9,7 +9,11 @@ function tagUrl(url: string = ''): string {
 export const tagApi = {
   // 获取标签列表
   getTags(params?: TagQueryParams) {
-    return api.get(tagUrl(''), params)
+    return api.get(tagUrl('/admin/list'), params)
+  },
+
+  getAllTags(params?: TagQueryParams) {
+    return api.get(tagUrl('/list'), params)
   },
 
   // 获取标签详情

@@ -18,9 +18,9 @@ export interface TagForm {
 }
 
 export interface TagQueryParams {
-  page?: number
-  limit?: number
+  current?: number
+  size?: number
   search?: string
   sortBy?: string
-  sortOrder?: 'asc' | 'desc'
+  sortOrder?: 'asc' | 'desc' | 'ASC' | 'DESC'
 }

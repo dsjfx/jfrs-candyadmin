@@ -153,7 +153,7 @@
 
     <!-- 分页 -->
     <div class="pagination">
-      <el-pagination v-model:current-page="pagination.page" v-model:page-size="pagination.limit" :total="total"
+      <el-pagination v-model:current-page="pagination.current" v-model:page-size="pagination.size" :total="total"
         :page-sizes="[10, 20, 50, 100]" layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange"
         @current-change="handlePageChange" />
     </div>
@@ -233,8 +233,8 @@ const subjectMap = computed(() => {
 })
 
 const pagination = reactive({
-  page: 1,
-  limit: 10
+  current: 1,
+  size: 10
 });
 
 // 初始化数据
@@ -276,7 +276,7 @@ const filterNodeMethod: FilterNodeMethodFunction = (
 }
 
 const handleSearch = () => {
-  pagination.page = 1;
+  pagination.current = 1;
   fetchBlogs();
 };
 
@@ -348,12 +348,12 @@ const handleBatchDelete = async () => {
 };
 
 const handleSizeChange = (size: number) => {
-  pagination.limit = size;
+  pagination.size = size;
   fetchBlogs();
 };
 
 const handlePageChange = (page: number) => {
-  pagination.page = page;
+  pagination.current = page;
   fetchBlogs();
 };
 </script>

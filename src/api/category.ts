@@ -12,6 +12,10 @@ export const categoryApi = {
     return api.get(categoryUrl('/admin/list'), params)
   },
 
+  getAllCategories(params?: CategoryQueryParams) {
+    return api.get(categoryUrl('/list'), params)
+  },
+
   // 获取分类详情
   getCategory(id: string | number) {
     return api.get(categoryUrl(`/${id}`))

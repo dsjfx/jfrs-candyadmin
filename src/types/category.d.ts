@@ -30,10 +30,10 @@ export interface CategoryForm {
 }
 
 export interface CategoryQueryParams {
-  page?: number
-  limit?: number
+  current?: number
+  size?: number
   search?: string
   parentId?: number | string
   sortBy?: string
-  sortOrder?: 'asc' | 'desc'
+  sortOrder?: 'asc' | 'desc' | 'ASC' | 'DESC'
 }

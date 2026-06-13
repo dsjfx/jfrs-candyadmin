@@ -46,6 +46,15 @@ import {
 } from '@element-plus/icons-vue'
 import type { TabsPaneContext } from 'element-plus'
 
+// 定义组件模块的类型
+interface ComponentModule {
+  default: any; // Vue 组件
+  meta?: {
+    name: string;
+    version: string;
+  }
+}
+
 // 标签页配置
 const tabs = [
   { name: 'general', label: '通用设置', icon: Setting },
@@ -109,7 +118,9 @@ const loadComponent = async (tabName: string) => {
     }
 
     // 3. 动态导入组件
-    const module = await import(`./${componentNames[tabName]}.vue`)
+    const modules = import.meta.glob<ComponentModule>('./*.vue')
+    const module = await modules[`./${componentNames[tabName]}.vue`]()
+    // const module = await import(`./${componentNames[tabName]}.vue`)
     const component = module.default || module
 
     // 4. 保存组件

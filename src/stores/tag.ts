@@ -7,13 +7,7 @@ interface TagState {
   currentTag: Tag | null
   total: number
   loading: boolean
-  queryParams: {
-    page: number
-    limit: number
-    search?: string
-    sortBy?: string
-    sortOrder?: 'asc' | 'desc'
-  }
+  queryParams: TagQueryParams
 }
 
 export const useTagStore = defineStore('tag', {
@@ -23,27 +17,39 @@ export const useTagStore = defineStore('tag', {
     total: 0,
     loading: false,
     queryParams: {
-      page: 1,
-      limit: 20,
+      current: 1,
+      size: 10,
       search: '',
       sortBy: 'createdAt',
-      sortOrder: 'desc'
+      sortOrder: 'DESC'
     }
   }),
 
   actions: {
     // 获取标签列表
-    async fetchTags(params?: TagQueryParams) {
+    async fetchTags(params?: Partial<TagQueryParams>) {
       this.loading = true
       try {
         if (params) {
           this.queryParams = { ...this.queryParams, ...params }
         }
 
-        const { tags, pagination } = await tagApi.getTags(this.queryParams)
-        this.tags = tags
+        const { records, pagination } = await tagApi.getTags(this.queryParams)
+        this.tags = records
         this.total = pagination.total
+      } catch (error) {
+        console.error('获取标签列表失败:', error)
+        throw error
+      } finally {
+        this.loading = false
+      }
+    },
 
+    async fetchAllTags(params?: Partial<TagQueryParams>) {
+      this.loading = true
+      try {
+        const tags = await tagApi.getAllTags(params)
+        this.tags = tags
       } catch (error) {
         console.error('获取标签列表失败:', error)
         throw error

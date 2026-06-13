@@ -94,7 +94,7 @@
 
     <!-- 分页 -->
     <div class="pagination">
-      <el-pagination v-model:current-page="pagination.page" v-model:page-size="pagination.limit" :total="total"
+      <el-pagination v-model:current-page="pagination.current" v-model:page-size="pagination.size" :total="total"
         :page-sizes="[10, 20, 50, 100]" layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange"
         @current-change="handlePageChange" />
     </div>
@@ -170,8 +170,8 @@ const searchForm = reactive({
 })
 
 const pagination = reactive({
-  page: 1,
-  limit: 10
+  current: 1,
+  size: 10
 })
 
 const dialog = reactive({
@@ -226,10 +226,12 @@ onMounted(() => {
 const fetchTags = async () => {
   try {
     loading.value = true
-    await tagStore.fetchTags({
+
+    const params: Record<string, unknown> = {
       ...searchForm,
       ...pagination
-    })
+    };
+    await tagStore.fetchTags(params)
   } catch (error) {
     console.error('获取标签列表失败:', error)
   } finally {
@@ -238,7 +240,7 @@ const fetchTags = async () => {
 }
 
 const handleSearch = () => {
-  pagination.page = 1
+  pagination.current = 1
   fetchTags()
 }
 
@@ -330,12 +332,12 @@ const handleSelectionChange = (selection: Tag[]) => {
 }
 
 const handleSizeChange = (size: number) => {
-  pagination.limit = size
+  pagination.size = size
   fetchTags()
 }
 
 const handlePageChange = (page: number) => {
-  pagination.page = page
+  pagination.current = page
   fetchTags()
 }
 

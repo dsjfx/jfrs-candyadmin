@@ -114,7 +114,7 @@
 
     <!-- 分页 -->
     <div class="pagination" v-if="!isTreeMode">
-      <el-pagination v-model:current-page="pagination.page" v-model:page-size="pagination.limit" :total="total"
+      <el-pagination v-model:current-page="pagination.current" v-model:page-size="pagination.size" :total="total"
         :page-sizes="[10, 20, 50, 100]" layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange"
         @current-change="handlePageChange" />
     </div>
@@ -205,8 +205,8 @@ const searchForm = reactive({
 })
 
 const pagination = reactive({
-  page: 1,
-  limit: 10
+  current: 1,
+  size: 10
 })
 
 const dialog = reactive({
@@ -306,7 +306,12 @@ onMounted(() => {
 const fetchCategories = async () => {
   try {
     loading.value = true
-    await categoryStore.fetchCategories()
+    const params: Record<string, unknown> = {
+      ...searchForm,
+      ...pagination
+    };
+
+    await categoryStore.fetchCategories(params)
   } catch (error) {
     console.error('获取分类列表失败:', error)
   } finally {
@@ -315,7 +320,7 @@ const fetchCategories = async () => {
 }
 
 const handleSearch = () => {
-  pagination.page = 1
+  pagination.current = 1
   fetchCategories()
 }
 
@@ -428,12 +433,12 @@ const handleSelectionChange = (selection: CategoryForm[]) => {
 }
 
 const handleSizeChange = (size: number) => {
-  pagination.limit = size
+  pagination.size = size
   fetchCategories()
 }
 
 const handlePageChange = (page: number) => {
-  pagination.page = page
+  pagination.current = page
   fetchCategories()
 }
 

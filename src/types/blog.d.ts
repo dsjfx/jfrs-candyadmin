@@ -46,17 +46,17 @@ export interface BlogForm {
 }
 
 export interface BlogQueryParams {
-  page?: number;
-  limit?: number;
+  current?: number;
+  size?: number;
   search?: string;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc' | 'ASC' | 'DESC';
+  subject?: string;
   status?: string;
   categoryId?: number | string;
   tagId?: number | string;
   startDate?: string;
   endDate?: string;
-  sortBy?: string;
-  sortOrder?: 'asc' | 'desc';
-  subject?: string;
 }
 
 /**

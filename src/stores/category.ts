@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { categoryApi } from '@/api/category'
-import type { Category, CategoryForm, CategoryTree } from '@/types/category'
+import type { Category, CategoryForm, CategoryQueryParams, CategoryTree } from '@/types/category'
 import { isDefined } from '@/utils/common'
 
 interface CategoryState {
@@ -9,6 +9,7 @@ interface CategoryState {
   currentCategory: Category | null
   total: number
   loading: boolean
+  queryParams: CategoryQueryParams
 }
 
 export const useCategoryStore = defineStore('category', {
@@ -17,17 +18,44 @@ export const useCategoryStore = defineStore('category', {
     categoryTree: [],
     currentCategory: null,
     total: 0,
-    loading: false
+    loading: false,
+    queryParams: {
+      current: 1,
+      size: 10,
+      search: '',
+      sortBy: 'createdAt',
+      sortOrder: 'desc'
+    }
   }),
 
   actions: {
     // 获取分类列表（平铺）
-    async fetchCategories(params?: CategoryForm) {
+    async fetchCategories(params?: Partial<CategoryQueryParams>) {
       this.loading = true
       try {
-        const { records, pagination } = await categoryApi.getCategories(params)
+        if (params) {
+          this.queryParams = { ...this.queryParams, ...params }
+        }
+
+        const { records, pagination } = await categoryApi.getCategories(this.queryParams)
         this.categories = records
         this.total = pagination.total
+
+        // 构建树形结构
+        this.buildCategoryTree()
+      } catch (error) {
+        console.error('获取分类列表失败:', error)
+        throw error
+      } finally {
+        this.loading = false
+      }
+    },
+
+    async fetchAllCategories(params?: Partial<CategoryQueryParams>) {
+      this.loading = true
+      try {
+        const categories = await categoryApi.getAllCategories(params)
+        this.categories = categories
 
         // 构建树形结构
         this.buildCategoryTree()

@@ -33,7 +33,8 @@
 
           <!-- 标签 -->
           <el-form-item label="标签">
-            <el-select v-model="formData.tagIds" multiple placeholder="请选择标签" class="editor-form-tag" filterable>
+            <el-select v-model="formData.tagIds" multiple filterable :virtualized="true" placeholder="请选择标签"
+              class="editor-form-tag">
               <el-option v-for="tag in tags" :key="tag.id" :label="tag.name" :value="tag.id">
                 <div class="tag-option">
                   <span class="tag-color" :style="{ backgroundColor: tag.color || '#409eff' }" />
@@ -44,7 +45,7 @@
           </el-form-item>
 
           <!-- 摘要 -->
-          <el-form-item label="摘要">
+          <el-form-item label="摘要" prop="summary">
             <el-input v-model="formData.summary" type="textarea" :rows="5" placeholder="请输入博客摘要（留空则自动生成）"
               maxlength="200" show-word-limit />
           </el-form-item>
@@ -185,12 +186,15 @@ const rules: FormRules = {
     { required: true, message: '请输入标题', trigger: 'blur' },
     { min: 3, max: 100, message: '长度在 3 到 100 个字符', trigger: 'blur' }
   ],
-  type: [
-    { required: true, message: '请选择类型', trigger: 'change' },
+  subject: [
+    { required: true, message: '请选择类别', trigger: 'change' },
   ],
   content: [
     { required: true, message: '请输入内容', trigger: 'blur' },
     { min: 10, message: '内容至少 10 个字符', trigger: 'blur' }
+  ],
+  summary: [
+    { required: true, max: 200, message: '摘要不能超过 200 个字符', trigger: 'blur' }
   ],
   categoryId: [
     { required: true, message: '请选择分类', trigger: 'change' },
@@ -250,8 +254,8 @@ const filterNodeMethod = (value: string, data: { label?: string; name?: string }
 // 初始化数据
 onMounted(async () => {
   await Promise.all([
-    categoryStore.fetchCategories(),
-    tagStore.fetchTags(),
+    categoryStore.fetchAllCategories(),
+    tagStore.fetchAllTags(),
     loadSubjects(),
     loadVisibilities(),
     loadCommentPermissions()
