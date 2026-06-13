@@ -536,7 +536,7 @@ const fetchStats = async () => {
     await new Promise(resolve => setTimeout(resolve, 500))
 
     // 获取博客数据
-    await blogStore.fetchBlogs({ cuurent: 1, size: 1 })
+    await blogStore.fetchBlogs({ current: 1, size: 1 })
     stats.totalPosts = blogStore.total
     stats.todayPosts = Math.floor(Math.random() * 10) // 模拟今日新增
     stats.postsTrend = Math.floor(Math.random() * 20) - 10 // -10到10的随机趋势
