@@ -173,7 +173,7 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Search, Plus, Expand, Fold } from '@element-plus/icons-vue'
-import type { FormInstance, FormRules, TableColumnCtx } from 'element-plus'
+import type { FormInstance, FormRules } from 'element-plus'
 import { useCategoryStore } from '@/stores/category'
 import type { CategoryForm, CategoryTree } from '@/types/category'
 import { checkScreenWidth, formatDate } from '@/utils/common'
