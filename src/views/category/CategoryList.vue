@@ -49,7 +49,7 @@
     <!-- 分类表格 -->
     <el-table v-loading="loading" ref="tableRef" :data="categoryTree" row-key="id"
       :tree-props="{ children: 'children', hasChildren: 'hasChildren' }" :default-expand-all="expandedAll"
-      @selection-change="handleSelectionChange" stripe>
+      @selection-change="handleSelectionChange" :row-class-name="rowClassName" class="tree-table-basic">
       <el-table-column v-if="!isMobile" type="selection" width="55" />
       <el-table-column v-else type="index" label="序号" width="55" />
 
@@ -83,7 +83,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="sort" label="排序" width="100" align="center">
+      <el-table-column prop="sort" label="排序" width="150" align="center">
         <template #default="{ row }">
           <el-input-number v-model="row.sort" :min="0" :max="999" size="small" @change="handleOrderChange(row)" />
         </template>
@@ -173,7 +173,7 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Search, Plus, Expand, Fold } from '@element-plus/icons-vue'
-import type { FormInstance, FormRules } from 'element-plus'
+import type { FormInstance, FormRules, TableColumnCtx } from 'element-plus'
 import { useCategoryStore } from '@/stores/category'
 import type { CategoryForm, CategoryTree } from '@/types/category'
 import { checkScreenWidth, formatDate } from '@/utils/common'
@@ -261,17 +261,17 @@ const predefinedColors = [
 ]
 
 // 判断是否为父节点
-// const isParent = (row: CategoryTree) => {
-//   return row.children && row.children.length > 0
-// }
+const isParent = (row: CategoryTree) => {
+  return row.children && row.children.length > 0
+}
 
 // 行样式
-// const rowClassName = ({ row }: { row: CategoryTree }) => {
-//   if (isParent(row)) {
-//     return 'parent-tree-row'
-//   }
-//   return ''
-// }
+const rowClassName = ({ row }: { row: CategoryTree }) => {
+  if (isParent(row)) {
+    return 'parent-tree-row'
+  }
+  return 'child-tree-row'
+}
 
 // 单元格样式
 // const cellStyle = ({
@@ -576,9 +576,20 @@ $breakpoint-mobile: 768px;
   }
 }
 
-.el-table .parent-tree-row {
-  background-color: red;
-  margin-top: 100px;
+.tree-table-basic :deep(.parent-tree-row) {
+  background-color: #f0f9ff !important;
+  font-weight: 600;
+  color: #1890ff;
+}
+
+.tree-table-basic :deep(.child-tree-row) {
+  background-color: #ffffff !important;
+  color: #606266;
+}
+
+/* 增加缩进 */
+.tree-table-basic :deep(.child-tree-row .el-table_1_column_2 .cell) {
+  padding-left: 40px !important;
 }
 
 .form-tip {

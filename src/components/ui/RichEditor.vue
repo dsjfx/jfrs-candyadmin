@@ -180,9 +180,9 @@ const handleFileUpload = async (event: Event) => {
     return
   }
 
-  // 检查文件大小（限制为 2MB）
-  if (file.size > 2 * 1024 * 1024) {
-    ElMessage.error('图片大小不能超过 2MB')
+  // 检查文件大小（限制为 5MB）
+  if (file.size > 5 * 1024 * 1024) {
+    ElMessage.error('图片大小不能超过 5MB')
     return
   }
 

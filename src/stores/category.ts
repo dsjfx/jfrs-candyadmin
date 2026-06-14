@@ -21,7 +21,7 @@ export const useCategoryStore = defineStore('category', {
     loading: false,
     queryParams: {
       current: 1,
-      size: 10,
+      size: 50,
       search: '',
       sortBy: 'createdAt',
       sortOrder: 'desc'
