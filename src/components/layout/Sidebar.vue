@@ -32,7 +32,7 @@
     </el-menu-item>
 
     <!-- 评论管理 -->
-    <!-- <el-sub-menu index="comments">
+    <el-sub-menu index="comments">
       <template #title>
         <el-icon>
           <ChatDotRound />
@@ -59,7 +59,7 @@
         <span>垃圾评论</span>
         <el-badge :value="spamCount" class="menu-badge" v-if="spamCount > 0" />
       </el-menu-item>
-    </el-sub-menu> -->
+    </el-sub-menu>
 
     <!-- 系统设置 -->
     <el-menu-item index="/settings" v-if="!isMobile">
@@ -101,8 +101,8 @@ const emit = defineEmits<{
 
 const route = useRoute()
 const activeMenu = ref(route.path)
-// const pendingCount = ref(10)
-// const spamCount = ref(3)
+const pendingCount = ref(10)
+const spamCount = ref(3)
 
 const isMobile = checkScreenWidth();
 

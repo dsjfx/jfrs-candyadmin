@@ -89,31 +89,31 @@ const router = createRouter({
 });
 
 // 临时增加，备案后再删除
-const loginInfo = {
-  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNCIsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiYWRtaW4iLCJqdGkiOiJhYjg5ZTU2My1jOGY0LTRlZDQtODRmOS1lOGI1ZjA4Y2MzZmUiLCJpYXQiOjE3ODA4MTkzMjQsImV4cCI6MTc4MzQxMTMyNCwiYXVkIjoiamNhbmR5LWFkbWluIiwiaXNzIjoiamluZ290In0.JSAR80U_VibHgnbWlbP8MtUz4wURIovL3vPwUXlMZc8",
-  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNCIsInR5cGUiOiJyZWZyZXNoIiwianRpIjoiZjc2NDQ1NDktZjBjZi00NWI0LTlmN2ItNDhjZTI0NzdmNTNiIiwiaWF0IjoxNzgwODE5MzI0LCJleHAiOjE3ODE0MjQxMjQsImlzcyI6ImppbmdvdCJ9.UU12K-Z7NZ_7d6yLQY_emdWGp8t_rsDx9Uc3kKMWJ94",
-  "expiresIn": 2592000,
-  "tokenType": "Bearer",
-  "userInfo": {
-    "id": "14",
-    "username": "admin",
-    "nickname": "管理员",
-    "email": "admin123@126.com",
-    "role": "admin",
-    "avatar": null,
-    "permissions": ["*"]
-  }
-}
+// const loginInfo = {
+//   "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNCIsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiYWRtaW4iLCJqdGkiOiJhYjg5ZTU2My1jOGY0LTRlZDQtODRmOS1lOGI1ZjA4Y2MzZmUiLCJpYXQiOjE3ODA4MTkzMjQsImV4cCI6MTc4MzQxMTMyNCwiYXVkIjoiamNhbmR5LWFkbWluIiwiaXNzIjoiamluZ290In0.JSAR80U_VibHgnbWlbP8MtUz4wURIovL3vPwUXlMZc8",
+//   "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNCIsInR5cGUiOiJyZWZyZXNoIiwianRpIjoiZjc2NDQ1NDktZjBjZi00NWI0LTlmN2ItNDhjZTI0NzdmNTNiIiwiaWF0IjoxNzgwODE5MzI0LCJleHAiOjE3ODE0MjQxMjQsImlzcyI6ImppbmdvdCJ9.UU12K-Z7NZ_7d6yLQY_emdWGp8t_rsDx9Uc3kKMWJ94",
+//   "expiresIn": 2592000,
+//   "tokenType": "Bearer",
+//   "userInfo": {
+//     "id": "14",
+//     "username": "admin",
+//     "nickname": "管理员",
+//     "email": "admin123@126.com",
+//     "role": "admin",
+//     "avatar": null,
+//     "permissions": ["*"]
+//   }
+// }
 
 // 路由守卫
 router.beforeEach((to, _from, next) => {
-  // const token = localStorage.getItem('access_token');
+  const token = localStorage.getItem('access_token');
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
   // ==== BEGIN 临时增加，备案后再删除
-  const token = loginInfo.accessToken;
-  localStorage.setItem('access_token', loginInfo.accessToken);
-  localStorage.setItem('user_info', JSON.stringify(loginInfo.userInfo));
+  // const token = loginInfo.accessToken;
+  // localStorage.setItem('access_token', loginInfo.accessToken);
+  // localStorage.setItem('user_info', JSON.stringify(loginInfo.userInfo));
   // ==== END 临时增加，备案后再删除``
 
   if (requiresAuth && !token) {
