@@ -83,7 +83,7 @@ export const useAuthStore = defineStore('auth', () => {
     token.value = loginData.accessToken
     userInfo.value = loginData.userInfo
     permissions.value = loginData.userInfo.permissions
-    console.log(JSON.stringify(loginData))
+    
     // 保存到本地存储
     localStorage.setItem('access_token', loginData.accessToken)
     localStorage.setItem('user_info', JSON.stringify(loginData.userInfo))
