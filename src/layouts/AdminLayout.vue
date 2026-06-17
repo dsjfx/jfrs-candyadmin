@@ -788,7 +788,10 @@ $breakpoint-tablet: 992px;
 
       .footer-beian-icp {
         margin-left: 0;
-        vertical-align: middle;
+
+        a {
+          vertical-align: middle;
+        }
       }
 
       .footer-beian-mps {
