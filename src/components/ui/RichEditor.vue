@@ -19,6 +19,7 @@ import { ElMessage } from 'element-plus'
 import '@vueup/vue-quill/dist/vue-quill.snow.css' // 雪碧主题
 // import '@vueup/vue-quill/dist/vue-quill.bubble.css' // 气泡主题
 import request from '../../api/index';
+import { compressImageFile } from '@/utils/imageCompress'
 
 // 如果是 Nuxt 项目，需要 ClientOnly 包装
 // 如果是普通 Vue 项目，可以直接使用 QuillEditor，不需要 ClientOnly
@@ -181,16 +182,40 @@ const handleFileUpload = async (event: Event) => {
   }
 
   // 检查文件大小（限制为 5MB）
-  if (file.size > 5 * 1024 * 1024) {
-    ElMessage.error('图片大小不能超过 5MB')
+  // We'll attempt compression for larger files but still enforce a hard limit
+  const hardLimit = 10 * 1024 * 1024 // 10MB hard limit for raw files
+  if (file.size > hardLimit) {
+    ElMessage.error('图片大小不能超过 10MB')
     return
+  }
+
+  let fileToUpload: File = file
+  try {
+    const threeMB = 3 * 1024 * 1024
+    if (file.size > threeMB) {
+      ElMessage.info('图片较大，正在尝试压缩，请稍候...')
+      const { file: compressed, blob } = await compressImageFile(file, {
+        maxSizeMB: 3,
+        minQuality: 0.7,
+        stepQuality: 0.05,
+        minWidth: 1000,
+        minHeight: 600,
+        outputType: file.type === 'image/png' ? 'image/png' : 'image/jpeg'
+      })
+      if (blob.size < file.size) {
+        fileToUpload = compressed
+      }
+    }
+  } catch (err) {
+    console.debug('compress failed', err)
+    ElMessage.warning('图片压缩失败，将上传原图')
   }
 
   emit('image-upload', file)
 
   try {
-    // 上传图片
-    const imageUrl = await uploadImage(file)
+  // 上传图片 (use compressed file when available)
+  const imageUrl = await uploadImage(fileToUpload)
 
     // 插入图片到编辑器
     const quill = quillRef.value?.getQuill()

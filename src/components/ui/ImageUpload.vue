@@ -107,6 +107,7 @@ import { Plus, Delete, Refresh, ZoomIn } from '@element-plus/icons-vue'
 import Cropper from 'cropperjs'
 import 'cropperjs/dist/cropper.css'
 import { Photo } from '@/types/photo'
+import { compressImageFile } from '@/utils/imageCompress'
 
 interface Props {
   modelValue?: string
@@ -177,12 +178,45 @@ const handleTouchStart = (event: TouchEvent) => {
     const file = target.files?.[0]
 
     if (file) {
-      if (!handleFile(file)) {
-        input.value = ''
-        return
-      }
+      // perform same compression and checks as normal flow
+      (async () => {
+        if (!handleFile(file)) {
+          input.value = ''
+          document.body.removeChild(input)
+          return
+        }
 
-      uploadFile(file)
+        let fileToUse: File = file
+        try {
+          const threeMB = 3 * 1024 * 1024
+          if (file.size > threeMB) {
+            ElMessage.info('图片较大，正在尝试压缩，请稍候...')
+            const { file: compressedFile, blob } = await compressImageFile(file, {
+              maxSizeMB: props.maxSize,
+              minQuality: 0.7,
+              stepQuality: 0.05,
+              minWidth: 1000,
+              minHeight: 600,
+              outputType: file.type === 'image/png' ? 'image/png' : 'image/jpeg'
+            })
+
+            if (blob.size < file.size) fileToUse = compressedFile
+          }
+        } catch (err) {
+          console.debug('compress failed', err)
+          ElMessage.warning('图片压缩失败，将上传原图')
+        }
+
+        if (fileToUse.size > props.maxSize * 1024 * 1024) {
+          ElMessage.error(`文件大小不能超过 ${props.maxSize}MB，即使压缩后仍超出限制`)
+          input.value = ''
+          document.body.removeChild(input)
+          return
+        }
+
+        uploadFile(fileToUse)
+        document.body.removeChild(input)
+      })()
     }
 
     // 清理 input 元素
@@ -215,7 +249,7 @@ const handleFile = (file: File): boolean => {
 }
 
 // 处理文件选择
-const handleFileChange = (e: Event) => {
+const handleFileChange = async (e: Event) => {
   const input = e.target as HTMLInputElement
   const file = input.files?.[0]
 
@@ -243,6 +277,40 @@ const handleFileChange = (e: Event) => {
     return
   }
 
+  // If file is large, try to compress before further processing
+  let fileToUse: File = file
+  try {
+    const threeMB = 3 * 1024 * 1024
+    if (file.size > threeMB) {
+      ElMessage.info('图片较大，正在尝试压缩，请稍候...')
+      const { file: compressedFile, blob } = await compressImageFile(file, {
+        maxSizeMB: props.maxSize,
+        minQuality: 0.7,
+        stepQuality: 0.05,
+        minWidth: 1000,
+        minHeight: 600,
+        outputType: file.type === 'image/png' ? 'image/png' : 'image/jpeg'
+      })
+
+      // If compression produced a smaller file, use it
+      if (blob.size < file.size) {
+        fileToUse = compressedFile
+      }
+    }
+  } catch (err) {
+    console.debug('compress failed', err)
+    ElMessage.warning('图片压缩失败，将上传原图')
+  }
+
+  // 检查最终大小是否满足限制
+  if (fileToUse.size > props.maxSize * 1024 * 1024) {
+    ElMessage.error(`文件大小不能超过 ${props.maxSize}MB，即使压缩后仍超出限制`)
+    input.value = ''
+    return
+  }
+
+  currentFile = fileToUse
+
   // 如果需要裁剪，打开裁剪对话框
   if (props.enableCrop) {
     const reader = new FileReader()
@@ -250,10 +318,10 @@ const handleFileChange = (e: Event) => {
       cropImageSrc.value = e.target?.result as string
       cropVisible.value = true
     }
-    reader.readAsDataURL(file)
+    reader.readAsDataURL(fileToUse)
   } else {
     // 直接上传
-    uploadFile(file)
+    uploadFile(fileToUse)
   }
 
   // 清空input，允许重新选择同一个文件
