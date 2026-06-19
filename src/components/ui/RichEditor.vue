@@ -93,6 +93,7 @@ const editorOptions = computed(() => ({
         ['bold', 'italic', 'underline', 'strike'],
         [{ 'color': [] }, { 'background': [] }],
         [{ 'script': 'sub' }, { 'script': 'super' }],
+        ['code'],
         ['blockquote', 'code-block'],
         [{ 'list': 'ordered' }, { 'list': 'bullet' }],
         [{ 'indent': '-1' }, { 'indent': '+1' }],
@@ -123,6 +124,7 @@ const tooltipMap = {
   'ql-underline': '下划线 (Ctrl+U)',
   'ql-strike': '删除线',
   'ql-blockquote': '引用',
+  'ql-code': '代码',
   'ql-code-block': '代码块',
   'ql-header': '标题',
   'ql-list': '列表',
@@ -214,8 +216,8 @@ const handleFileUpload = async (event: Event) => {
   emit('image-upload', file)
 
   try {
-  // 上传图片 (use compressed file when available)
-  const imageUrl = await uploadImage(fileToUpload)
+    // 上传图片 (use compressed file when available)
+    const imageUrl = await uploadImage(fileToUpload)
 
     // 插入图片到编辑器
     const quill = quillRef.value?.getQuill()
@@ -417,6 +419,15 @@ defineExpose({
     border-bottom: 1px solid #dcdfe6;
     background: #f5f7fa;
     font-family: inherit;
+
+    .ql-code::before {
+      content: "<>";
+      font-size: 14px;
+    }
+
+    .ql-code svg {
+      display: none;
+    }
 
     // 自定义工具栏按钮样式
     .ql-formats {
