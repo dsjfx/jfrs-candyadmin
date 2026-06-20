@@ -91,6 +91,12 @@
         </template>
       </el-table-column>
 
+      <el-table-column prop="publishedAt" label="发布日期" width="110">
+        <template #default="{ row }">
+          {{ row.publishedAt ? formatDate(row.publishedAt, 'YYYY-MM-DD') : '-' }}
+        </template>
+      </el-table-column>
+
       <el-table-column label="类别" width="120">
         <template #default="{ row }">
           {{ subjectMap[row.subject as string] ?? row.subject ?? '-' }}
@@ -122,12 +128,6 @@
           {{ formatDate(row.createdAt) }}
         </template>
       </el-table-column> -->
-
-      <el-table-column prop="publishedAt" label="发布日期" width="180">
-        <template #default="{ row }">
-          {{ row.publishedAt ? formatDate(row.publishedAt) : '-' }}
-        </template>
-      </el-table-column>
 
       <el-table-column label="操作" width="200" :fixed="isFixed">
         <template #default="{ row }">
