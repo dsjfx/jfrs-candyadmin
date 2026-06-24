@@ -293,6 +293,7 @@ const isEditMode = computed(() => !!route.params.id);
 
 const formData = reactive<BlogForm>({
   title: '',
+  subtitle: '',
   subject: 'article',
   content: '',
   summary: '',
