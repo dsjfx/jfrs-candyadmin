@@ -4,6 +4,7 @@ export interface Blog {
   // 主要属性
   id: number | string;
   title: string;
+  subtitle?: string;
   subject: string;
   content: string;
   summary?: string;

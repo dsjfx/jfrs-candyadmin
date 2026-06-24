@@ -277,6 +277,7 @@ const fetchBlogDetail = async () => {
     const blog = await blogStore.fetchBlog(route.params.id as string);
     Object.assign(formData, {
       title: blog.title,
+      subtitle: blog.subtitle,
       subject: blog.subject,
       content: blog.content,
       summary: blog.summary,
