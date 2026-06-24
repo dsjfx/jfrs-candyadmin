@@ -9,6 +9,11 @@
             <el-input v-model="formData.title" placeholder="请输入博客标题" size="large" clearable @input="generateSlug" />
           </el-form-item>
 
+          <!-- 子标题 -->
+          <el-form-item label="子标题" prop="subtitle">
+            <el-input v-model="formData.subtitle" placeholder="请输入子标题" size="large" clearable style="width:400px;" />
+          </el-form-item>
+
           <el-form-item label="类别" prop="subject">
             <el-select v-model="formData.subject" placeholder="请选择类型" clearable style="width: 100px;">
               <el-option v-for="subject in subjects" :key="subject.id" :label="subject.name" :value="subject.value" />
@@ -18,6 +23,29 @@
           <!-- 内容 -->
           <el-form-item label="内容" prop="content">
             <RichEditor v-model="formData.content" />
+          </el-form-item>
+
+          <!-- 摘要 -->
+          <el-form-item label="摘要" prop="summary">
+            <el-input v-model="formData.summary" type="textarea" :rows="5" placeholder="请输入博客摘要（留空则自动生成）"
+              maxlength="200" show-word-limit />
+          </el-form-item>
+        </el-col>
+
+        <!-- 右侧设置区域 -->
+        <el-col :xs="24" :lg="8">
+          <!-- 封面图 -->
+          <el-form-item label="封面图">
+            <ImageUpload v-model="formData.coverImage" @upload-success="uploadHandler" />
+          </el-form-item>
+
+          <!-- 状态 -->
+          <el-form-item label="状态" prop="status">
+            <el-radio-group v-model="formData.status">
+              <el-radio value="draft">草稿</el-radio>
+              <el-radio value="published">发布</el-radio>
+              <!-- <el-radio value="archived">归档</el-radio> -->
+            </el-radio-group>
           </el-form-item>
 
           <!-- 分类 -->
@@ -42,29 +70,6 @@
                 </div>
               </el-option>
             </el-select>
-          </el-form-item>
-
-          <!-- 摘要 -->
-          <el-form-item label="摘要" prop="summary">
-            <el-input v-model="formData.summary" type="textarea" :rows="5" placeholder="请输入博客摘要（留空则自动生成）"
-              maxlength="200" show-word-limit />
-          </el-form-item>
-        </el-col>
-
-        <!-- 右侧设置区域 -->
-        <el-col :xs="24" :lg="8">
-          <!-- 封面图 -->
-          <el-form-item label="封面图">
-            <ImageUpload v-model="formData.coverImage" @upload-success="uploadHandler" />
-          </el-form-item>
-
-          <!-- 状态 -->
-          <el-form-item label="状态" prop="status">
-            <el-radio-group v-model="formData.status">
-              <el-radio value="draft">草稿</el-radio>
-              <el-radio value="published">发布</el-radio>
-              <!-- <el-radio value="archived">归档</el-radio> -->
-            </el-radio-group>
           </el-form-item>
 
           <!-- 发布日期 -->
@@ -165,6 +170,7 @@ const isEditMode = computed(() => !!route.params.id);
 
 const formData = reactive<BlogForm>({
   title: '',
+  subtitle: '',
   subject: null,
   content: '',
   summary: '',

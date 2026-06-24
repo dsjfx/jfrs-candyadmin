@@ -27,6 +27,7 @@ export interface Blog {
 
 export interface BlogForm {
   title: string;
+  subtitle: string;
   subject: `${EBlogType}` | null;
   content: string;
   summary?: string;
