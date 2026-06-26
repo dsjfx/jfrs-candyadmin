@@ -9,7 +9,7 @@
 
         <div class="logo-container">
           <div class="logo" @click="goHome">
-            <!-- <img v-if="!isCollapse" src="avatar" alt="Logo" class="logo-img" /> -->
+            <el-avatar :src="avatar" size="default" class="logo-avatar" />
             <h2 v-if="!isCollapse && !isMobile" class="logo-text">
               <span v-if="appNameParts.hasMaster" class="title-master">
                 {{ appNameParts.master }}
@@ -21,9 +21,9 @@
                 {{ appNameParts.slave }}
               </span>
             </h2>
-            <h2 v-else-if="!isCollapse && isMobile" class="logo-text">
-              糖果
-              <el-button text v-if="isMobile" :icon="Fold" @click="toggleCollapse" class="collapse-btn" />
+            <h2 v-else-if="!isCollapse && isMobile" @click="toggleCollapse" class="logo-text">
+              <span>糖果蜂窝</span>
+              <!-- <el-button text v-if="isMobile" :icon="Fold" @click="toggleCollapse" class="collapse-btn" /> -->
             </h2>
             <h3 v-else class="logo-text-mini">糖果</h3>
           </div>
@@ -243,7 +243,7 @@ const searchKeyword = ref('')
 const showTabs = ref(true)
 const activeTab = ref('')
 
-// const avatar = ref<string>('https://picsum.photos/200/200?random=10')
+const avatar = ref<string>('https://picsum.photos/200/200?random=10')
 const icpLicense = ref<string | null>('苏ICP备2026029057号-1');
 const icpUrl = ref<string | ''>('https://beian.miit.gov.cn/');
 const publicSecurityLicense = ref<string | null>('苏公网安备32040002010731号');
@@ -540,11 +540,11 @@ $breakpoint-tablet: 992px;
     .logo {
       display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: center;
+      gap: 20px;
 
-      .logo-img {
-        width: 32px;
-        height: 32px;
+      .logo-avatar {
+        border: none;
       }
 
       .logo-text {

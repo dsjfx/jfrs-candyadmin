@@ -178,13 +178,21 @@
     <div class="footer">
       <div class="footer-info">
         <span class="footer-copyright">© {{ currentYear }} {{ appName }}</span>
-        <span class="footer-version">版本: {{ appVersion }}. </span>
+        <span class="footer-version">版本: {{ appVersion }} </span>
         <!-- <span class="support">技术支持: {{ appSupport }}</span> -->
       </div>
       <div class="footer-beian">
-        <a v-if="icpLicense" href="https://beian.miit.gov.cn/" target="_blank">{{ icpLicense }}</a>
-        <a v-if="publicSecurityLicense" href="http://www.beian.gov.cn/" target="_blank">{{ publicSecurityLicense
-        }}</a>
+        <span class="footer-beian-icp">
+          <a v-if="icpLicense" :href="icpUrl" target="_blank">
+            {{ icpLicense }}
+          </a>
+        </span>
+        <span class="footer-beian-mps">
+          <img class="mps" src="@/assets/img/logo-mps.png" alt="mps" />
+          <a v-if="publicSecurityLicense" :href="mpsUrl" target="_blank">
+            {{ publicSecurityLicense }}
+          </a>
+        </span>
       </div>
     </div>
   </div>
@@ -236,8 +244,10 @@ const appVersion = import.meta.env.VITE_APP_VERSION || '1.0.0'
 const currentYear = new Date().getFullYear()
 
 // 备案信息（参考 AdminLayout.vue）
-const icpLicense = ref<string | null>(null)
-const publicSecurityLicense = ref<string | null>(null)
+const icpLicense = ref<string | null>('苏ICP备2026029057号-1');
+const icpUrl = ref<string | ''>('https://beian.miit.gov.cn/');
+const publicSecurityLicense = ref<string | null>('苏公网安备32040002010731号');
+const mpsUrl = ref<string | ''>('https://beian.mps.gov.cn/#/query/webSearch?code=32040002010731')
 
 const { appName } = useAppName('管理系统')
 
@@ -570,18 +580,18 @@ onMounted(() => {
   }
 
   // 尝试加载简单用户信息以获取备案信息（icp / 公安备案）
-  ; (async () => {
-    try {
-      const simpleUser = await authStore.getUserAvatar()
-      if (simpleUser) {
-        icpLicense.value = simpleUser.icpLicense ?? null
-        publicSecurityLicense.value = simpleUser.publicSecurityLicense ?? null
-      }
-    } catch (err) {
-      // log and ignore
-      console.debug('load simple user failed', err)
-    }
-  })()
+  // ; (async () => {
+  //   try {
+  //     const simpleUser = await authStore.getUserAvatar()
+  //     if (simpleUser) {
+  //       icpLicense.value = simpleUser.icpLicense ?? null
+  //       publicSecurityLicense.value = simpleUser.publicSecurityLicense ?? null
+  //     }
+  //   } catch (err) {
+  //     // log and ignore
+  //     console.debug('load simple user failed', err)
+  //   }
+  // })()
 })
 </script>
 
@@ -1027,6 +1037,32 @@ $breakpoint-tablet: 992px;
 
       &:hover {
         color: variables.$color-primary;
+      }
+    }
+
+    .footer-beian-icp {
+      margin-left: 0;
+
+      a {
+        vertical-align: middle;
+      }
+    }
+
+    .footer-beian-mps {
+      margin-left: 20px;
+
+      img {
+        vertical-align: middle;
+      }
+
+      a {
+        vertical-align: middle;
+      }
+
+      .mps {
+        width: 15px;
+        height: 15px;
+        margin-right: 5px;
       }
     }
   }
