@@ -83,7 +83,11 @@
               class="cover-image" />
             <div class="title-content">
               <router-link :to="`/blog/edit/${row.id}`" class="title-link">
-                {{ row.title }}
+                <span class="main-title">{{ row.title }}</span>
+                <span v-if="row.subtitle" class="master-title">
+                  <span class="pipe">|</span>
+                  <span class="subtitle">{{ row.subtitle }}</span>
+                </span>
               </router-link>
               <div class="summary">{{ row.summary }}</div>
             </div>
@@ -434,6 +438,12 @@ $breakpoint-tablet: 992px;
 
         &:hover {
           color: #409eff;
+        }
+
+        .master-title {
+          .pipe {
+            margin: auto 10px;
+          }
         }
       }
 

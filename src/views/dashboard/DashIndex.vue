@@ -92,7 +92,13 @@
               <div v-else class="posts-container">
                 <div v-for="post in recentPosts" :key="post.id" class="post-item" @click="handleEditPost(post.id)">
                   <div class="post-content">
-                    <h4 class="post-title">{{ post.title }}</h4>
+                    <h4 class="post-title">
+                      <span>{{ post.title }}</span>
+                      <span v-if="post.subtitle" class="master-title">
+                        <span class="pipe">|</span>
+                        <span class="subtitle">{{ post.subtitle }}</span>
+                      </span>
+                    </h4>
                     <div class="post-meta">
                       <span class="meta-item">
                         <el-icon>
@@ -948,6 +954,12 @@ $breakpoint-desktop: 1200px;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
+
+          .master-title {
+            .pipe {
+              margin: auto 10px;
+            }
+          }
         }
 
         .post-meta {
