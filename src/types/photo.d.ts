@@ -1,25 +1,26 @@
 export interface Photo {
-	dimensions: Dimension;
-	filename: string;
-	mimetype: string;
-	originalname: string;
-	path: string;
-	size: number;
-	thumbnail: Thumbnail;
-	url: string;
-	photoType: string;	//avatar, cover, gallery
+  dimensions: Dimension;
+  filename: string;
+  mimetype: string;
+  originalname: string;
+  path: string;
+  size: number;
+  thumbnail: Thumbnail;
+  url: string;
+  photoType: string;	//avatar, cover, gallery
+  date?: string; // Optional date property
 }
 
 interface Dimension {
-	width: number;
-	height: number;
+  width: number;
+  height: number;
 }
 
 interface Thumbnail {
-	filename: string;
-	path: string;
-	size: number;
-	url: string;
+  filename: string;
+  path: string;
+  size: number;
+  url: string;
 }
 
 export interface PhotoData {

@@ -255,12 +255,38 @@ const handleFile = (file: File): boolean => {
 const getPicMetadata = async (file: File) => {
   try {
     const parsed = await exifr.parse(file)
-    console.log('EXIF Metadata:', parsed)
+    // console.log('EXIF Metadata:', parsed)
     return parsed
   } catch (error) {
     console.error('Failed to read EXIF metadata:', error)
     return null
   }
+}
+
+const formatDateToChinaTime = (value: unknown): string => {
+  const date = value instanceof Date
+    ? value
+    : (typeof value === 'string' || typeof value === 'number')
+      ? new Date(value)
+      : null
+
+  if (!date || Number.isNaN(date.getTime())) {
+    return String(value)
+  }
+
+  const parts = new Intl.DateTimeFormat('sv-SE', {
+    timeZone: 'Asia/Shanghai',
+    hour12: false,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  }).formatToParts(date)
+
+  const formatted = Object.fromEntries(parts.map(({ type, value }) => [type, value]))
+  return `${formatted.year}-${formatted.month}-${formatted.day}T${formatted.hour}:${formatted.minute}:${formatted.second}+08:00`
 }
 
 const pickExifDates = (metadata: Record<string, unknown> | null) => {
@@ -269,7 +295,7 @@ const pickExifDates = (metadata: Record<string, unknown> | null) => {
   return fields.reduce((result: Record<string, string>, key) => {
     const value = metadata[key]
     if (value !== undefined && value !== null) {
-      result[key] = value instanceof Date ? value.toISOString() : String(value)
+      result[key] = formatDateToChinaTime(value)
     }
     return result
   }, {} as Record<string, string>)

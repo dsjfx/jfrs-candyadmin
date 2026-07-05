@@ -363,9 +363,14 @@ const handleCancel = () => {
 };
 
 const uploadHandler = (photo: Photo) => {
-  // console.log(photo)
-  if (photo && photo.url) {
+  if (!photo) return;
+  // set the cover image if it's not already set
+  if (photo.url) {
     photos.value.push(photo);
+  }
+  // set the publishedAt date if it's not already set
+  if (photo.date) {
+    formData.publishedAt = photo.date;
   }
 }
 </script>
