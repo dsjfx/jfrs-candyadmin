@@ -108,6 +108,7 @@ import Cropper from 'cropperjs'
 import 'cropperjs/dist/cropper.css'
 import { Photo } from '@/types/photo'
 import { compressImageFile } from '@/utils/imageCompress'
+import exifr from 'exifr';
 
 interface Props {
   modelValue?: string
@@ -147,6 +148,7 @@ const cropImageRef = ref<HTMLImageElement>()
 const cropImageSrc = ref('')
 const cropAspect = ref(props.cropAspect)
 let cropper: Cropper | null = null
+const metadata = ref<Record<string, unknown> | null>(null)
 
 // 当前上传的文件
 let currentFile: File | null = null
@@ -186,6 +188,9 @@ const handleTouchStart = (event: TouchEvent) => {
           return
         }
 
+        // Read EXIF metadata before compression/crop/upload
+        metadata.value = await getPicMetadata(file)
+
         let fileToUse: File = file
         try {
           const threeMB = 3 * 1024 * 1024
@@ -215,7 +220,6 @@ const handleTouchStart = (event: TouchEvent) => {
         }
 
         uploadFile(fileToUse)
-        document.body.removeChild(input)
       })()
     }
 
@@ -248,6 +252,29 @@ const handleFile = (file: File): boolean => {
   return true
 }
 
+const getPicMetadata = async (file: File) => {
+  try {
+    const parsed = await exifr.parse(file)
+    console.log('EXIF Metadata:', parsed)
+    return parsed
+  } catch (error) {
+    console.error('Failed to read EXIF metadata:', error)
+    return null
+  }
+}
+
+const pickExifDates = (metadata: Record<string, unknown> | null) => {
+  if (!metadata) return {}
+  const fields = ['DateTimeOriginal', 'CreateDate', 'ModifyDate']
+  return fields.reduce((result: Record<string, string>, key) => {
+    const value = metadata[key]
+    if (value !== undefined && value !== null) {
+      result[key] = value instanceof Date ? value.toISOString() : String(value)
+    }
+    return result
+  }, {} as Record<string, string>)
+}
+
 // 处理文件选择
 const handleFileChange = async (e: Event) => {
   const input = e.target as HTMLInputElement
@@ -255,27 +282,13 @@ const handleFileChange = async (e: Event) => {
 
   if (!file) return
 
-  // 检查文件类型
-  // const acceptedTypes = props.accept.split(',')
-  // const fileType = file.type
-  // if (!acceptedTypes.some(type => fileType.match(type))) {
-  //   ElMessage.error('不支持的文件类型')
-  //   input.value = ''
-  //   return
-  // }
-
-  // // 检查文件大小
-  // if (file.size > props.maxSize * 1024 * 1024) {
-  //   ElMessage.error(`文件大小不能超过 ${props.maxSize}MB`)
-  //   input.value = ''
-  //   return
-  // }
-
-  // currentFile = file
   if (!handleFile(file)) {
     input.value = ''
     return
   }
+
+  // Read EXIF metadata before compression/crop/upload
+  metadata.value = await getPicMetadata(file)
 
   // If file is large, try to compress before further processing
   let fileToUse: File = file
@@ -418,6 +431,10 @@ const uploadFile = (file: File) => {
   // 创建 FormData
   const formData = new FormData()
   formData.append('file', file)
+  const exifDates = pickExifDates(metadata.value)
+  Object.entries(exifDates).forEach(([key, value]) => {
+    formData.append(key, value)
+  })
 
   // 创建 XMLHttpRequest 对象
   const xhr = new XMLHttpRequest()
