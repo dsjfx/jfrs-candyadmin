@@ -32,6 +32,9 @@ importers:
       element-plus:
         specifier: ^2.13.0
         version: 2.13.2(vue@3.5.27(typescript@5.9.3))
+      exifr:
+        specifier: ^7.1.3
+        version: 7.1.3
       marked:
         specifier: ^17.0.1
         version: 17.0.1
@@ -1093,6 +1096,9 @@ packages:
 
   eventemitter3@2.0.3:
     resolution: {integrity: sha512-jLN68Dx5kyFHaePoXWPsCGW5qdyZQtLYHkxkg02/Mz6g0kYpDx4FyP6XfArhQdlOC4b8Mv+EMxPo/8La7Tzghg==}
+
+  exifr@7.1.3:
+    resolution: {integrity: sha512-g/aje2noHivrRSLbAUtBPWFbxKdKhgj/xr1vATDdUXPOFYJlQ62Ft0oy+72V6XLIpDJfHs6gXLbBLAolqOXYRw==}
 
   extend@3.0.2:
     resolution: {integrity: sha512-fjquC59cD7CyW6urNXK0FBufkZcoiGG80wTuPujX590cB5Ttln20E2UB4S/WARVqhXffZl2LNgS+gQdPIIim/g==}
@@ -2639,6 +2645,8 @@ snapshots:
   esutils@2.0.3: {}
 
   eventemitter3@2.0.3: {}
+
+  exifr@7.1.3: {}
 
   extend@3.0.2: {}
 
