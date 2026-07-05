@@ -90,9 +90,9 @@
               </div>
 
               <div v-else class="posts-container">
-                <div v-for="post in recentPosts" :key="post.id" class="post-item" @click="handleEditPost(post.id)">
+                <div v-for="post in recentPosts" :key="post.id" class="post-item">
                   <div class="post-content">
-                    <h4 class="post-title">
+                    <h4 class="post-title" @click="handleEditPost(post.id)">
                       <span>{{ post.title }}</span>
                       <span v-if="post.subtitle" class="master-title">
                         <span class="pipe">|</span>
@@ -100,19 +100,19 @@
                       </span>
                     </h4>
                     <div class="post-meta">
-                      <span class="meta-item">
+                      <span class="meta-item calendar">
                         <el-icon>
                           <Calendar />
                         </el-icon>
-                        {{ formatDate(post.createdAt, 'MM-DD HH:mm') }}
+                        {{ formatDate(post.createdAt, 'YYYY-MM-DD HH:mm') }}
                       </span>
-                      <span class="meta-item">
+                      <span class="meta-item view">
                         <el-icon>
                           <View />
                         </el-icon>
                         {{ post.views }}
                       </span>
-                      <span class="meta-item">
+                      <span class="meta-item star">
                         <el-icon>
                           <Star />
                         </el-icon>
@@ -127,7 +127,7 @@
                     <el-button size="small" link @click.stop="handleEditPost(post.id)">
                       编辑
                     </el-button>
-                    <el-dropdown trigger="click" @command="handlePostAction($event, post)">
+                    <el-dropdown trigger="click" @command="handlePostAction($event, post)" class="dropdown">
                       <el-button size="small" link>
                         <el-icon>
                           <More />
@@ -929,10 +929,16 @@ $breakpoint-desktop: 1200px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 10px;
       padding: 16px;
       border-bottom: 1px solid #f0f0f0;
-      cursor: pointer;
+      // cursor: pointer;
       transition: background-color 0.2s;
+
+      @media (max-width: $breakpoint-mobile) {
+        gap: 5px;
+        padding: 5px;
+      }
 
       &:last-child {
         border-bottom: none;
@@ -960,6 +966,11 @@ $breakpoint-desktop: 1200px;
               margin: auto 10px;
             }
           }
+
+          &:hover {
+            color: #409eff;
+            cursor: pointer;
+          }
         }
 
         .post-meta {
@@ -975,8 +986,19 @@ $breakpoint-desktop: 1200px;
             gap: 4px;
           }
 
+          .meta-item.star,
+          .meta-item.view {
+            @media (max-width: $breakpoint-mobile) {
+              display: none;
+            }
+          }
+
           .status-tag {
             margin-left: auto;
+
+            @media (max-width: $breakpoint-mobile) {
+              display: none;
+            }
           }
         }
       }
@@ -985,6 +1007,12 @@ $breakpoint-desktop: 1200px;
         display: flex;
         align-items: center;
         gap: 8px;
+
+        .dropdown {
+          @media (max-width: $breakpoint-mobile) {
+            display: none;
+          }
+        }
       }
     }
   }
