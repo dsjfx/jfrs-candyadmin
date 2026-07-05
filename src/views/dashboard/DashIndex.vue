@@ -406,7 +406,7 @@ const appVersion = import.meta.env.VITE_APP_VERSION || '1.0.0'
 // 当前日期和时间
 const currentDate = ref('')
 const currentTime = ref('')
-let timeInterval: number
+let timeInterval: string | number | NodeJS.Timeout | undefined
 
 // 加载状态
 const loading = reactive({
