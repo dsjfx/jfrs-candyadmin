@@ -4,7 +4,7 @@
     <div class="search-bar">
       <el-form :model="searchForm" inline class="el-form">
         <el-form-item class="el-form-item">
-          <el-input v-model="searchForm.keyword" placeholder="搜索标题/内容" clearable @clear="handleSearch">
+          <el-input v-model="searchForm.search" placeholder="搜索标题/内容" clearable @clear="handleSearch">
             <template #prefix>
               <el-icon>
                 <Search />
@@ -13,7 +13,7 @@
           </el-input>
         </el-form-item>
 
-        <el-form-item v-if="!isMobile" class="el-form-item">
+        <el-form-item class="el-form-item">
           <el-select v-model="searchForm.status" placeholder="状态" style="width: 80px" clearable @change="handleSearch">
             <el-option label="草稿" value="draft" />
             <el-option label="已发布" value="published" />
@@ -219,7 +219,7 @@ const loadSubjects = async () => {
 }
 
 const searchForm = reactive({
-  keyword: '',
+  search: '',
   status: '',
   categoryId: '',
   subject: '',
@@ -285,7 +285,7 @@ const handleSearch = () => {
 };
 
 const handleReset = () => {
-  searchForm.keyword = '';
+  searchForm.search = '';
   searchForm.status = '';
   searchForm.categoryId = '';
   handleSearch();
