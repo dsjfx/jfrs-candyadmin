@@ -396,7 +396,7 @@ const uploadHandler = (photo: Photo) => {
 watch(
   () => formData.subject,
   (value) => {
-    if (value !== 'image') {
+    if (value !== 'times') {
       formData.location = '';
     }
   }
