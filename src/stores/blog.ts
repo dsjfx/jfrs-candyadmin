@@ -23,7 +23,7 @@ export const useBlogStore = defineStore('blog', {
       size: 10,
       search: '',
       status: 'published',
-      sortBy: 'createdAt',
+      sortBy: 'publishedAt',
       sortOrder: 'desc'
     }
   }),
@@ -36,7 +36,6 @@ export const useBlogStore = defineStore('blog', {
         if (params) {
           this.queryParams = { ...this.queryParams, ...params };
         }
-
         const { records, pagination } = await blogApi.getBlogs(this.queryParams);
 
         this.blogs = records;

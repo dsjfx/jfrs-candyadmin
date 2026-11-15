@@ -20,6 +20,11 @@
             </el-select>
           </el-form-item>
 
+          <!-- 地点 -->
+          <el-form-item v-if="showLocation" label="地点" prop="location">
+            <el-input v-model="formData.location" placeholder="请输入地点" size="large" clearable style="width:200px;" />
+          </el-form-item>
+
           <!-- 内容 -->
           <el-form-item label="内容" prop="content">
             <RichEditor v-model="formData.content" />
@@ -139,7 +144,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, reactive, onMounted } from 'vue';
+import { ref, computed, reactive, watch, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import type { FormInstance, FormRules } from 'element-plus';
@@ -165,6 +170,7 @@ const submitting = ref(false);
 const visibilityRole = ref(false);
 const commentRole = ref<boolean>(false);
 const photos = ref<Photo[]>([]);
+const showLocation = computed(() => formData.subject === 'times');
 
 const isEditMode = computed(() => !!route.params.id);
 
@@ -175,6 +181,7 @@ const formData = reactive<BlogForm>({
   content: '',
   summary: '',
   coverImage: '',
+  location: '',
   categoryId: '',
   tagIds: [],
   status: 'draft',
@@ -207,7 +214,19 @@ const rules: FormRules = {
   ],
   visibility: [
     { required: true, message: '请选择可见性', trigger: 'change' },
-  ]
+  ],
+  // location: [
+  //   {
+  //     validator: (_rule, value, callback) => {
+  //       if (showLocation.value && !value) {
+  //         callback(new Error('请输入地点'));
+  //       } else {
+  //         callback();
+  //       }
+  //     },
+  //     trigger: 'blur'
+  //   }
+  // ]
 };
 
 const subjects = ref<AssistParams[]>([]);
@@ -373,6 +392,16 @@ const uploadHandler = (photo: Photo) => {
     formData.publishedAt = photo.date;
   }
 }
+
+watch(
+  () => formData.subject,
+  (value) => {
+    if (value !== 'image') {
+      formData.location = '';
+    }
+  }
+);
+
 </script>
 
 <style lang="scss" scoped>

@@ -91,7 +91,7 @@ service.interceptors.response.use(
     // 处理 HTTP 状态码错误
     if (error.response) {
       const status = error.response.status
-      const message = error.response.data?.error.message || error.message
+      const message = error.response.statusText || error.message
 
       switch (status) {
         case 400:

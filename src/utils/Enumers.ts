@@ -1,7 +1,8 @@
 // 博客类型
 export enum EBlogType {
-	ARTICLE = 'article',
-	IMAGE = 'image',
+	ARTICLE = 'daily',
+	IMAGE = 'times',
+	Document = 'note',
 }
 
 // 文章可见性

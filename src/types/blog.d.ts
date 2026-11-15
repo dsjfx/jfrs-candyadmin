@@ -34,6 +34,7 @@ export interface BlogForm {
   summary?: string;
   coverImage?: string;
   coverThumbnail?: string;
+  location?: string;
   status: 'draft' | 'published' | 'archived';
   categoryId: number | string;
   tagIds: (number | string)[];

@@ -574,7 +574,7 @@ const fetchRecentPosts = async () => {
     await blogStore.fetchBlogs({
       current: 1,
       size: 5,
-      sortBy: 'createdAt',
+      sortBy: 'publishedAt',
       sortOrder: 'desc'
     })
     recentPosts.value = blogStore.blogs.slice(0, 5)
