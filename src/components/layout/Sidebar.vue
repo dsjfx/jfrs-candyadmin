@@ -61,6 +61,13 @@
       </el-menu-item>
     </el-sub-menu>
 
+    <el-menu-item index="/requirements">
+      <el-icon>
+        <List />
+      </el-icon>
+      <template #title>需求管理</template>
+    </el-menu-item>
+
     <!-- 系统设置 -->
     <el-menu-item index="/settings" v-if="!isMobile">
       <el-icon>

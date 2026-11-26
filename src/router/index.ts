@@ -69,6 +69,12 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '垃圾评论', query: { status: 'spam' } }
       },
       {
+        path: 'requirements',
+        name: 'RequirementList',
+        component: () => import('@/views/requirement/RequirementList.vue'),
+        meta: { title: '需求管理', icon: 'List' }
+      },
+      {
         path: 'settings',
         name: 'Settings',
         component: () => import('@/views/settings/SetIndex.vue'),
