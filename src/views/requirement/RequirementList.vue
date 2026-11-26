@@ -92,8 +92,9 @@
         <template #default="{ row }">
           <div class="requirement-name">
             <span class="name-text">{{ row.name }}</span>
-            <el-tag v-if="row.priority" size="small" :type="priorityType[row.priority]" class="priority-tag">
-              {{ priorityLabel[row.priority] }}
+            <el-tag v-if="row.priority" size="small" :type="priorityType[row.priority as keyof typeof priorityType]"
+              class="priority-tag">
+              {{ priorityLabel[row.priority as keyof typeof priorityLabel] }}
             </el-tag>
           </div>
         </template>
@@ -103,8 +104,8 @@
 
       <el-table-column prop="status" label="状态" width="100">
         <template #default="{ row }">
-          <el-tag :type="statusType[row.status]" size="small">
-            {{ statusLabel[row.status] }}
+          <el-tag :type="statusType[row.status as keyof typeof statusType]" size="small">
+            {{ statusLabel[row.status as keyof typeof statusLabel] }}
           </el-tag>
         </template>
       </el-table-column>
@@ -112,7 +113,7 @@
       <el-table-column prop="category" label="分类" width="100">
         <template #default="{ row }">
           <el-tag size="small" type="info">
-            {{ categoryLabel[row.category] }}
+            {{ categoryLabel[row.category as keyof typeof categoryLabel] }}
           </el-tag>
         </template>
       </el-table-column>
@@ -406,7 +407,9 @@ const rules: FormRules = {
   status: [{ required: true, message: '请选择状态', trigger: 'change' }]
 }
 
-// ============ 状态映射 ============
+type TagType = 'primary' | 'success' | 'info' | 'warning' | 'danger'
+
+// 状态映射
 const statusLabel: Record<string, string> = {
   pending: '待处理',
   planning: '规划中',
@@ -416,30 +419,31 @@ const statusLabel: Record<string, string> = {
   cancelled: '已取消'
 }
 
-const statusType: Record<string, string> = {
+const statusType = {
   pending: 'info',
   planning: 'warning',
   developing: 'primary',
-  testing: '',
+  testing: 'primary',
   completed: 'success',
   cancelled: 'danger'
-}
+} as const satisfies Record<string, TagType>
+
 
 const priorityLabel = {
   low: '低',
   medium: '中',
   high: '高',
   urgent: '紧急'
-}
+} as const satisfies Record<string, '低' | '中' | '高' | '紧急'>
 
 const priorityType = {
   low: 'info',
   medium: 'warning',
   high: 'danger',
   urgent: 'danger'
-}
+} as const satisfies Record<string, TagType>
 
-const categoryLabel = {
+const categoryLabel: Record<string, string> = {
   feature: '新功能',
   improvement: '功能优化',
   bugfix: 'Bug修复',
@@ -447,7 +451,7 @@ const categoryLabel = {
   other: '其他'
 }
 
-const sourceLabel = {
+const sourceLabel: Record<string, string> = {
   customer: '客户',
   internal: '内部',
   management: '管理层',
